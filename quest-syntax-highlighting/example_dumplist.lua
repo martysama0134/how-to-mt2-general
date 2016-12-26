@@ -34,6 +34,7 @@ local modList = {
 	-- "os",
 	-- "string",
 	-- "table",
+	"DragonLair",
 	"affect",
 	"arena",
 	"ba",
