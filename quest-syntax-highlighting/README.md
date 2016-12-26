@@ -2,7 +2,7 @@
 
 ---
 ## How to "install" it?
-Open *%appdata%\Notepad++\langs.xml* and replace the `<Language name="lua" ...>` section with this: [langs.m2luaonly.xml](./langs.m2luaonly.xml)
+Open *%appdata%\Notepad++\langs.xml* and replace the `<Language name="lua" ...>` section with this: [langs.m2luaonly.xml](https://github.com/martysama0134/how-to-mt2-general/raw/master/quest-syntax-highlighting/langs.m2luaonly.xml)
 
 After that, restart notepad++, and it's done.
 
