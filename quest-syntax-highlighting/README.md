@@ -8,3 +8,6 @@ After that, restart notepad++, and it's done.
 
 Result:
 [![Result Label](http://i.imgur.com/ijAVxHg.png)](http://i.imgur.com/ijAVxHg.png)
+
+Note:
+In [example_dumplist.lua](./example_dumplist.lua) you can find some examples to make some function list dumps as well via quest.
