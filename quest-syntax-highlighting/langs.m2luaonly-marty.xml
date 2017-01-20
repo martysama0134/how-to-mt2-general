@@ -48,6 +48,7 @@
 				c_mob_name
 				char_log
 				chat
+				check_event_flags
 				clear_letter
 				clear_server_timer
 				clearmapsignal
@@ -70,12 +71,15 @@
 				find_pc_cond
 				get_channel_id
 				get_global_time
+				get_item_attr_norm_table
+				get_item_attr_rare_table
 				get_locale
 				get_locale_base_path
 				get_quest_state
 				get_random_vnum_from_table
 				get_server_timer_arg
 				get_special_item_group
+				get_table_postfix
 				get_time
 				get_time_remaining
 				get_today_count
@@ -92,6 +96,7 @@
 				item_log
 				item_name
 				kill_all_in_map
+				kill_vid0
 				locale_index
 				loop_timer
 				make_quest_button
@@ -100,6 +105,9 @@
 				mob_name
 				mob_vnum
 				multi_notice
+				mysql_direct_query
+				mysql_escape_string
+				mysql_password
 				newproxy
 				newstate
 				next_time_is_now
@@ -123,9 +131,12 @@
 				pc_index
 				pc_is_novice
 				purge_area
+				purge_vid0
 				raw_script
 				regen_in_map
 				remove_item_range
+				resend_letter
+				resend_letter_ex
 				resetcolor
 				resetdelay
 				restart_quest
@@ -146,9 +157,27 @@
 				select_item
 				select_table
 				send_letter
+				send_letter_blue
+				send_letter_blue_blink
+				send_letter_blue_blink_text
+				send_letter_blue_text
 				send_letter_ex
+				send_letter_golden
+				send_letter_golden_blink
+				send_letter_golden_blink_text
+				send_letter_golden_text
+				send_letter_green
+				send_letter_green_blink
+				send_letter_green_blink_text
+				send_letter_green_text
+				send_letter_purple
+				send_letter_purple_blink
+				send_letter_purple_blink_text
+				send_letter_purple_text
 				server_loop_timer
 				server_timer
+				setDFA_from_table
+				setDFR_from_table
 				set_bgm_volume_enable
 				set_quest_state
 				set_skin
@@ -162,6 +191,8 @@
 				setstate
 				settopimage
 				spawn_mob
+				spawn_mob0
+				spawn_mob_in_map
 				store_charname_by_id
 				sys_err
 				sys_log
@@ -219,12 +250,15 @@
 				d.exit_all_by_item_group
 				d.exit_all_to_start_position
 				d.find
+				d.get_damage_from_affect
+				d.get_damage_from_race
 				d.get_kill_mob_count
 				d.get_kill_stone_count
 				d.get_map_index
 				d.get_unique_vid
 				d.getf
 				d.getf_from_map_index
+				d.is_available0
 				d.is_unique_dead
 				d.is_use_potion
 				d.join
@@ -242,9 +276,13 @@
 				d.purge_area
 				d.purge_unique
 				d.regen_file
+				d.reset_damage_from_affect
+				d.reset_damage_from_race
 				d.revived
 				d.say_diff_by_item_group
 				d.select
+				d.set_damage_from_affect
+				d.set_damage_from_race
 				d.set_dest
 				d.set_exit_all_at_eliminate
 				d.set_item_group
@@ -271,6 +309,8 @@
 				d.unique_set_def_grade
 				d.unique_set_hp
 				d.unique_set_maxhp
+				d.unset_damage_from_affect
+				d.unset_damage_from_race
 				d.warp_all
 				dance_event.gohome
 				ds.give_qualification
@@ -293,6 +333,7 @@
 				forked.warp_all_in_map
 				game.drop_item
 				game.drop_item_with_ownership
+				game.drop_item_with_ownership_and_dice
 				game.get_event_flag
 				game.get_safebox_level
 				game.open_mall
@@ -301,21 +342,40 @@
 				game.request_make_guild
 				game.set_event_flag
 				game.set_safebox_level
+				guild.add_comment0
 				guild.around_ranking_string
 				guild.change_master
 				guild.change_master_with_limit
 				guild.get_any_war
+				guild.get_draw_count0
+				guild.get_exp_level0
+				guild.get_id0
 				guild.get_ladder_point
+				guild.get_loss_count0
+				guild.get_max_member0
+				guild.get_maxsp0
 				guild.get_member_count
+				guild.get_money0
 				guild.get_name
 				guild.get_rank
 				guild.get_reserve_war_table
+				guild.get_skill_level0
+				guild.get_skill_point0
+				guild.get_sp0
+				guild.get_total_member_level0
 				guild.get_warp_war_list
+				guild.get_win_count0
+				guild.give_exp0
+				guild.has_land0
 				guild.high_ranking_string
 				guild.is_bet
 				guild.is_war
 				guild.level
 				guild.name
+				guild.offer_exp0
+				guild.set_ladder_point0
+				guild.set_skill_level0
+				guild.set_skill_point0
 				guild.war_bet
 				guild.war_enter
 				highscore.register
@@ -337,32 +397,57 @@
 				horse.ride
 				horse.set_level
 				horse.set_name
+				horse.set_stat0
 				horse.summon
 				horse.unride
 				horse.unsummon
+				item.add_attr0
 				item.can_over9refine
+				item.change_attr0
 				item.change_to_over9
+				item.clear_attr0
 				item.copy_and_give_before_remove
+				item.count_attr0
+				item.get_addon_type
+				item.get_antiflag0
+				item.get_apply0
+				item.get_attr0
+				item.get_attribute_set_index
 				item.get_cell
 				item.get_count
 				item.get_id
+				item.get_immuneflag0
 				item.get_level
 				item.get_level_limit
 				item.get_name
 				item.get_over9_material_vnum
 				item.get_refine_vnum
+				item.get_seal_date
+				item.get_shop_cheque
+				item.get_shop_price
 				item.get_size
 				item.get_socket
 				item.get_sub_type
 				item.get_type
 				item.get_value
 				item.get_vnum
+				item.get_wearflag0
+				item.has_antiflag0
 				item.has_flag
+				item.has_immuneflag0
+				item.has_wearflag0
+				item.is_available0
+				item.is_sealed
 				item.next_refine_vnum
 				item.over9refine
 				item.remove
 				item.select
 				item.select_cell
+				item.set_attr0
+				item.set_count0
+				item.set_seal_date
+				item.set_shop_cheque
+				item.set_shop_price
 				item.set_socket
 				item.set_value
 				item.start_realtime_expire
@@ -393,13 +478,22 @@
 				npc.get_empire
 				npc.get_guild
 				npc.get_leader_vid
+				npc.get_level0
+				npc.get_local_x0
+				npc.get_local_y0
+				npc.get_name0
+				npc.get_pid0
 				npc.get_race
 				npc.get_remain_hairdye_count
 				npc.get_remain_skill_book_count
 				npc.get_vid
 				npc.get_vid_attack_mul
 				npc.get_vid_damage_mul
+				npc.get_vnum0
+				npc.get_x0
+				npc.get_y0
 				npc.getrace
+				npc.is_available0
 				npc.is_near
 				npc.is_near_vid
 				npc.is_pc
@@ -408,6 +502,8 @@
 				npc.lock
 				npc.open_shop
 				npc.purge
+				npc.select0
+				npc.select_vid0
 				npc.set_vid_attack_mul
 				npc.set_vid_damage_mul
 				npc.unlock
@@ -429,15 +525,20 @@
 				oxevent.end_event
 				oxevent.end_event_force
 				oxevent.get_attender
+				oxevent.get_oxquiz_fn
 				oxevent.get_status
 				oxevent.give_item
 				oxevent.open
 				oxevent.quiz
+				oxevent.set_oxquiz_fn
+				oxevent.set_oxquiz_fn0
 				party.chat
 				party.clear_ready
+				party.delete_party
 				party.get_leader_pid
 				party.get_max_level
 				party.get_member_pids
+				party.get_min_level
 				party.get_near_count
 				party.getf
 				party.give_buff
@@ -445,6 +546,7 @@
 				party.is_leader
 				party.is_map_member_flag_lt
 				party.is_party
+				party.leave_party
 				party.run_cinematic
 				party.setf
 				party.setqf
@@ -453,6 +555,7 @@
 				pc.aggregate_monster
 				pc.can_warp
 				pc.change_alignment
+				pc.change_cheque
 				pc.change_empire
 				pc.change_gold
 				pc.change_money
@@ -460,6 +563,7 @@
 				pc.change_sex
 				pc.change_sp
 				pc.changealignment
+				pc.changecheque
 				pc.changegold
 				pc.changemoney
 				pc.charge_cash
@@ -468,11 +572,15 @@
 				pc.clear_sub_skill
 				pc.count_item
 				pc.countitem
+				pc.dc_delayed0
+				pc.dc_direct0
 				pc.dec_skill_point
+				pc.delf
 				pc.delqf
 				pc.destroy_guild
 				pc.diamond_refine
 				pc.enough_inventory
+				pc.equip_slot0
 				pc.forget_my_attacker
 				pc.get_account
 				pc.get_account_id
@@ -480,12 +588,16 @@
 				pc.get_armor
 				pc.get_change_empire_count
 				pc.get_channel_id
+				pc.get_cheque
+				pc.get_cheque2
+				pc.get_client_version0
 				pc.get_dx
 				pc.get_empire
 				pc.get_empty_inventory_count
 				pc.get_equip_refine_level
 				pc.get_exp
 				pc.get_exp_level
+				pc.get_exp_level0
 				pc.get_gm_level
 				pc.get_gold
 				pc.get_guild
@@ -494,9 +606,12 @@
 				pc.get_ht
 				pc.get_informer_item
 				pc.get_informer_type
+				pc.get_ip0
 				pc.get_iq
 				pc.get_job
 				pc.get_killee_drop_pct
+				pc.get_language
+				pc.get_language2
 				pc.get_leadership
 				pc.get_level
 				pc.get_local_x
@@ -531,6 +646,7 @@
 				pc.get_x
 				pc.get_y
 				pc.getarmor
+				pc.getcheque
 				pc.getcurrentmapindex
 				pc.getempire
 				pc.getf
@@ -550,6 +666,7 @@
 				pc.gety
 				pc.give_award
 				pc.give_award_socket
+				pc.give_cheque
 				pc.give_exp
 				pc.give_exp2
 				pc.give_exp_perc
@@ -557,20 +674,32 @@
 				pc.give_item
 				pc.give_item2
 				pc.give_item2_select
+				pc.give_item2_with_dice
 				pc.give_item_from_special_item_group
 				pc.give_lotto
 				pc.give_poly_marble
 				pc.give_polymorph_book
+				pc.give_random_book0
 				pc.has_guild
 				pc.has_master_skill
 				pc.hasguild
 				pc.have_map_scroll
 				pc.have_pos_scroll
 				pc.in_dungeon
+				pc.is_arena0
+				pc.is_arena_observer0
+				pc.is_available0
+				pc.is_busy0
 				pc.is_clear_skill_group
 				pc.is_dead
 				pc.is_engaged
 				pc.is_engaged_or_married
+				pc.is_flag_bleeding
+				pc.is_flag_fire
+				pc.is_flag_invisible
+				pc.is_flag_poison
+				pc.is_flag_slow
+				pc.is_flag_stun
 				pc.is_gm
 				pc.is_guild_master
 				pc.is_horse_alive
@@ -578,16 +707,22 @@
 				pc.is_mount
 				pc.is_near_vid
 				pc.is_polymorphed
+				pc.is_pvp0
 				pc.is_riding
 				pc.is_skill_book_no_delay
+				pc.is_trade0
 				pc.isguildmaster
 				pc.learn_grand_master_skill
+				pc.make_guild0
+				pc.make_item0
 				pc.mining
 				pc.mount
 				pc.mount_bonus
 				pc.ore_refine
 				pc.pc_attract_ranger
+				pc.pointchange
 				pc.polymorph
+				pc.pullmob
 				pc.refine_equip
 				pc.remove_from_guild
 				pc.remove_item
@@ -599,13 +734,29 @@
 				pc.revive_horse
 				pc.save_exit_location
 				pc.select
+				pc.select_pid
+				pc.select_vid
 				pc.send_block_mode
 				pc.set_change_empire_count
 				pc.set_dx
+				pc.set_flag_bleeding
+				pc.set_flag_dead
+				pc.set_flag_fire
+				pc.set_flag_invisible
+				pc.set_flag_kill
+				pc.set_flag_poison
+				pc.set_flag_slow
+				pc.set_flag_stun
+				pc.set_gm_level
 				pc.set_ht
 				pc.set_iq
+				pc.set_language
+				pc.set_language2
 				pc.set_level
+				pc.set_level0
+				pc.set_max_health
 				pc.set_part
+				pc.set_race0
 				pc.set_skill_group
 				pc.set_skill_level
 				pc.set_skill_point
@@ -615,6 +766,7 @@
 				pc.setf
 				pc.setqf
 				pc.teleport
+				pc.unequip_slot0
 				pc.unmount
 				pc.upgrade_polymorph_book
 				pc.warp
@@ -630,6 +782,7 @@
 				q.done
 				q.end_other_pc_block
 				q.getcurrentquestindex
+				q.getcurrentquestname
 				q.no_send
 				q.set_clock
 				q.set_clock_name
@@ -658,6 +811,12 @@
 				target.pc
 				target.pos
 				target.vid
+
+				mob_rewarp
+				mob_rewarp.enable
+				mob_rewarp.set_coord
+				mob_rewarp.set_interval_no_damage
+				mob_rewarp.set_interval_with_damage
 			</Keywords>
 			<Keywords name="type2">
 				openfile closefile readfrom writeto appendto tmpfile
@@ -670,5 +829,7 @@
 				package.cpath package.loaded package.loaders package.loadlib package.path package.preload package.seeall
 
 				click kill timer levelup login logout button info chat in out use server_timer enter leave letter take target party_kill unmount pick sig_use item_informer
+
+				die dnd mined pickup
 			</Keywords>
 		</Language>
