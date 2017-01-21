@@ -13,4 +13,4 @@ Note:
 
 * In [example_dumplist.lua](./example_dumplist.lua) you can find some examples to make some function list dumps as well via quest. (dumping only metin2 methods)
 * In [example_quest_functions.lua](./example_quest_functions.lua) you can find an example to make the whole function list currently in use, ideal for generating quest_functions.
-* [langs.m2luaonly.xml](https://github.com/martysama0134/how-to-mt2-general/raw/master/quest-syntax-highlighting/langs.m2luaonly-marty.xml) contains extended functions.
+* [langs.m2luaonly-marty.xml](https://github.com/martysama0134/how-to-mt2-general/raw/master/quest-syntax-highlighting/langs.m2luaonly-marty.xml) contains extended functions.
