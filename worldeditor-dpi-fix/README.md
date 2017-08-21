@@ -1,4 +1,4 @@
-If you have issues in displaying the WorldEditor such as a bigger an cut-off UI, you have to do the following things:
+If you have issues in displaying the WorldEditor such as a bigger and cut-off UI, you have to do the following things:
 
 1. Turn on the external manifest loading by running [Enable External Manifest.reg](./Enable External Manifest.reg).
 
