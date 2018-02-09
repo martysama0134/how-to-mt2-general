@@ -10,17 +10,16 @@ __url__			= "https://github.com/martysama0134/how-to-mt2-general/tree/master/xte
 __version__		= "1.1.0"
 
 def swapHex(basestring): # just for eternexus
-	asal = [basestring[i:i+2]
-		for i in range(0, len(basestring), 2)]
+	asal = [basestring[i:i+2] for i in range(0, len(basestring), 2)]
 	asal.reverse()
 	return ''.join(asal)
 
 def pad32Hex(keyDataHex, keySplitHex=8):
 	return ", ".join([swapHex(keyDataHex[i:i+keySplitHex]) for i in range(0, len(keyDataHex), keySplitHex)])
 
+from random import randrange
 def genKey():
-	import random
-	return random.randrange(0x1fFFffFF,0x6fFFffFF)
+	return randrange(0x1fFFffFF,0x6fFFffFF)
 
 if __name__ == "__main__":
 	import struct
@@ -36,12 +35,11 @@ if __name__ == "__main__":
 		keyFile.write("Hex:\n")
 		keyFile.write("%s [%s]\n" % (pad32Hex(keyIndexHex), keyIndexHex))
 		keyFile.write("Int:\n")
-		keyFile.write("static DWORD s_adwEterPackKey[] = { %u, %u, %u, %u };\n" % keyIndexInt)
+		keyFile.write("static DWORD s_adwEterPackKey[] =\n{\n\t%u,\n\t%u,\n\t%u,\n\t%u\n};\n" % keyIndexInt)
 
 		keyFile.write("\n### PACK KEY\n")
 		keyFile.write("Hex:\n")
 		keyFile.write("%s [%s]\n" % (pad32Hex(keyPackHex), keyPackHex))
 		keyFile.write("Int:\n")
-		keyFile.write("static DWORD s_adwEterPackSecurityKey[] = { %u, %u, %u, %u };\n" % keyPackInt)
-	print "DONE"
+		keyFile.write("static DWORD s_adwEterPackSecurityKey[] =\n{\n\t%u,\n\t%u,\n\t%u,\n\t%u\n};\n" % keyPackInt)
 #
