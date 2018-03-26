@@ -31,6 +31,11 @@ var updateQueryStringParam = function (key, value) {
     window.history.replaceState({}, "", baseUrl + params);
 };
 
+// set antiflag value
+$(document).ready(function () {
+	$("#antiflag-result").val($.urlParam('antiflag'));
+});
+
 // iter all checked checkbox antiflag
 $('#antiflag').on("change", "input[type='checkbox']", function () {
 	var res = 0;
@@ -70,8 +75,7 @@ $('#antiflag').on('keyup keypress', function(e) {
 	}
 });
 
-// set antiflag value
-$(document).ready(function () {
-	$("#antiflag-result").val($.urlParam('antiflag'));
+$("#antiflag-reset").click(function() {
+	$("#antiflag-reverse").val("").change();
 });
 
