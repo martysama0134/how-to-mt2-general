@@ -4,87 +4,142 @@
 		<title>M2 Item Flags Calculator</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-		<!-- <script src="jquery-3.3.1.min.js"></script> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="item_style.css"/>
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a href="#antiflag">antiflag</a></li>
-				<li><a href="#flag">flag</a></li>
-				<li><a href="#wearflag">wearflag</a></li>
-			</ul>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">M2 Item Flags Calculator</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav navbar-nav">
+					<li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="#antiflag">antiflag</a></li>
+					<li class="nav-item"><a class="nav-link" href="#flag">flag</a></li>
+					<li class="nav-item"><a class="nav-link" href="#wearflag">wearflag</a></li>
+				</ul>
+			</div>
 		</nav>
-		<article>
+		<article class="container-fluid col-md-5">
 			<h3>AntiFlag Calculator</h3>
-			<form id="antiflag" action="#" method="POST">
-				<label for="ITEM_ANTIFLAG_FEMALE">ITEM_ANTIFLAG_FEMALE:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_FEMALE" name="ITEM_ANTIFLAG_FEMALE" value="0"/>
+			<form id="antiflag" action="GET">
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_FEMALE" name="ITEM_ANTIFLAG_FEMALE" value="0"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_FEMALE">ITEM_ANTIFLAG_FEMALE</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_MALE">ITEM_ANTIFLAG_MALE:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_MALE" name="ITEM_ANTIFLAG_MALE" value="1"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_MALE" name="ITEM_ANTIFLAG_MALE" value="1"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_MALE">ITEM_ANTIFLAG_MALE</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_WARRIOR">ITEM_ANTIFLAG_WARRIOR:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_WARRIOR" name="ITEM_ANTIFLAG_WARRIOR" value="2"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_WARRIOR" name="ITEM_ANTIFLAG_WARRIOR" value="2"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_WARRIOR">ITEM_ANTIFLAG_WARRIOR</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_ASSASSIN">ITEM_ANTIFLAG_ASSASSIN:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_ASSASSIN" name="ITEM_ANTIFLAG_ASSASSIN" value="3"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_ASSASSIN" name="ITEM_ANTIFLAG_ASSASSIN" value="3"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_ASSASSIN">ITEM_ANTIFLAG_ASSASSIN</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_SURA">ITEM_ANTIFLAG_SURA:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_SURA" name="ITEM_ANTIFLAG_SURA" value="4"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_SURA" name="ITEM_ANTIFLAG_SURA" value="4"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_SURA">ITEM_ANTIFLAG_SURA</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_SHAMAN">ITEM_ANTIFLAG_SHAMAN:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_SHAMAN" name="ITEM_ANTIFLAG_SHAMAN" value="5"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_SHAMAN" name="ITEM_ANTIFLAG_SHAMAN" value="5"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_SHAMAN">ITEM_ANTIFLAG_SHAMAN</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_GET">ITEM_ANTIFLAG_GET:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_GET" name="ITEM_ANTIFLAG_GET" value="6"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_GET" name="ITEM_ANTIFLAG_GET" value="6"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_GET">ITEM_ANTIFLAG_GET</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_DROP">ITEM_ANTIFLAG_DROP:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_DROP" name="ITEM_ANTIFLAG_DROP" value="7"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_DROP" name="ITEM_ANTIFLAG_DROP" value="7"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_DROP">ITEM_ANTIFLAG_DROP</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_SELL">ITEM_ANTIFLAG_SELL:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_SELL" name="ITEM_ANTIFLAG_SELL" value="8"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_SELL" name="ITEM_ANTIFLAG_SELL" value="8"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_SELL">ITEM_ANTIFLAG_SELL</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_EMPIRE_A">ITEM_ANTIFLAG_EMPIRE_A:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_A" name="ITEM_ANTIFLAG_EMPIRE_A" value="9"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_A" name="ITEM_ANTIFLAG_EMPIRE_A" value="9"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_EMPIRE_A">ITEM_ANTIFLAG_EMPIRE_A</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_EMPIRE_B">ITEM_ANTIFLAG_EMPIRE_B:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_B" name="ITEM_ANTIFLAG_EMPIRE_B" value="10"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_B" name="ITEM_ANTIFLAG_EMPIRE_B" value="10"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_EMPIRE_B">ITEM_ANTIFLAG_EMPIRE_B</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_EMPIRE_C">ITEM_ANTIFLAG_EMPIRE_C:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_C" name="ITEM_ANTIFLAG_EMPIRE_C" value="11"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_C" name="ITEM_ANTIFLAG_EMPIRE_C" value="11"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_EMPIRE_C">ITEM_ANTIFLAG_EMPIRE_C</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_SAVE">ITEM_ANTIFLAG_SAVE:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_SAVE" name="ITEM_ANTIFLAG_SAVE" value="12"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_SAVE" name="ITEM_ANTIFLAG_SAVE" value="12"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_SAVE">ITEM_ANTIFLAG_SAVE</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_GIVE">ITEM_ANTIFLAG_GIVE:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_GIVE" name="ITEM_ANTIFLAG_GIVE" value="13"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_GIVE" name="ITEM_ANTIFLAG_GIVE" value="13"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_GIVE">ITEM_ANTIFLAG_GIVE</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_PKDROP">ITEM_ANTIFLAG_PKDROP:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_PKDROP" name="ITEM_ANTIFLAG_PKDROP" value="14"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_PKDROP" name="ITEM_ANTIFLAG_PKDROP" value="14"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_PKDROP">ITEM_ANTIFLAG_PKDROP</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_STACK">ITEM_ANTIFLAG_STACK:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_STACK" name="ITEM_ANTIFLAG_STACK" value="15"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_STACK" name="ITEM_ANTIFLAG_STACK" value="15"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_STACK">ITEM_ANTIFLAG_STACK</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_MYSHOP">ITEM_ANTIFLAG_MYSHOP:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_MYSHOP" name="ITEM_ANTIFLAG_MYSHOP" value="16"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_MYSHOP" name="ITEM_ANTIFLAG_MYSHOP" value="16"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_MYSHOP">ITEM_ANTIFLAG_MYSHOP</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_SAFEBOX">ITEM_ANTIFLAG_SAFEBOX:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_SAFEBOX" name="ITEM_ANTIFLAG_SAFEBOX" value="17"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_SAFEBOX" name="ITEM_ANTIFLAG_SAFEBOX" value="17"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_SAFEBOX">ITEM_ANTIFLAG_SAFEBOX</label>
+				</div>
 
-				<label for="ITEM_ANTIFLAG_WOLFMAN">ITEM_ANTIFLAG_WOLFMAN:</label>
-				<input type="checkbox" id="ITEM_ANTIFLAG_WOLFMAN" name="ITEM_ANTIFLAG_WOLFMAN" value="18"/>
+				<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="ITEM_ANTIFLAG_WOLFMAN" name="ITEM_ANTIFLAG_WOLFMAN" value="18"/>
+				<label class="form-check-label" for="ITEM_ANTIFLAG_WOLFMAN">ITEM_ANTIFLAG_WOLFMAN</label>
+				</div>
 
 				<!--result-->
-				<label for="antiflag-result">Result:</label>
-				<input type="number" id="antiflag-result" name="antiflag-result" readonly disabled />
+				<div class="form-group row">
+				<label class="col-sm-2 col-form-label" for="antiflag-result">Result</label>
+				<div class="col-sm-10">
+				<input class="form-control mb-2" type="number" id="antiflag-result" name="antiflag-result" readonly disabled />
+				</div>
+				</div>
 				<!--reverse-->
-				<label for="antiflag-reverse">Reverse:</label>
-				<input type="number" id="antiflag-reverse" name="antiflag-reverse"/>
+				<div class="form-group row">
+				<label class="col-sm-2 col-form-label" for="antiflag-reverse">Reverse</label>
+				<div class="col-sm-10">
+				<input class="form-control mb-2" type="number" id="antiflag-reverse" name="antiflag-reverse"/>
+				</div>
+				</div>
 			</form>
 		</article>
 		<footer>
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 			<script src="item_flags.js"></script>
 		</footer>
 	</body>
