@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>M2 Item Flags Calculator</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<!-- <script src="jquery-3.3.1.min.js"></script> -->
+		<link rel="stylesheet" href="item_style.css"/>
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a href="#antiflag">antiflag</a></li>
+				<li><a href="#flag">flag</a></li>
+				<li><a href="#wearflag">wearflag</a></li>
+			</ul>
+		</nav>
+		<article>
+			<h3>AntiFlag Calculator</h3>
+			<form id="antiflag" action="#" method="POST">
+				<label for="ITEM_ANTIFLAG_FEMALE">ITEM_ANTIFLAG_FEMALE:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_FEMALE" name="ITEM_ANTIFLAG_FEMALE" value="0"/>
+
+				<label for="ITEM_ANTIFLAG_MALE">ITEM_ANTIFLAG_MALE:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_MALE" name="ITEM_ANTIFLAG_MALE" value="1"/>
+
+				<label for="ITEM_ANTIFLAG_WARRIOR">ITEM_ANTIFLAG_WARRIOR:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_WARRIOR" name="ITEM_ANTIFLAG_WARRIOR" value="2"/>
+
+				<label for="ITEM_ANTIFLAG_ASSASSIN">ITEM_ANTIFLAG_ASSASSIN:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_ASSASSIN" name="ITEM_ANTIFLAG_ASSASSIN" value="3"/>
+
+				<label for="ITEM_ANTIFLAG_SURA">ITEM_ANTIFLAG_SURA:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_SURA" name="ITEM_ANTIFLAG_SURA" value="4"/>
+
+				<label for="ITEM_ANTIFLAG_SHAMAN">ITEM_ANTIFLAG_SHAMAN:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_SHAMAN" name="ITEM_ANTIFLAG_SHAMAN" value="5"/>
+
+				<label for="ITEM_ANTIFLAG_GET">ITEM_ANTIFLAG_GET:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_GET" name="ITEM_ANTIFLAG_GET" value="6"/>
+
+				<label for="ITEM_ANTIFLAG_DROP">ITEM_ANTIFLAG_DROP:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_DROP" name="ITEM_ANTIFLAG_DROP" value="7"/>
+
+				<label for="ITEM_ANTIFLAG_SELL">ITEM_ANTIFLAG_SELL:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_SELL" name="ITEM_ANTIFLAG_SELL" value="8"/>
+
+				<label for="ITEM_ANTIFLAG_EMPIRE_A">ITEM_ANTIFLAG_EMPIRE_A:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_A" name="ITEM_ANTIFLAG_EMPIRE_A" value="9"/>
+
+				<label for="ITEM_ANTIFLAG_EMPIRE_B">ITEM_ANTIFLAG_EMPIRE_B:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_B" name="ITEM_ANTIFLAG_EMPIRE_B" value="10"/>
+
+				<label for="ITEM_ANTIFLAG_EMPIRE_C">ITEM_ANTIFLAG_EMPIRE_C:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_EMPIRE_C" name="ITEM_ANTIFLAG_EMPIRE_C" value="11"/>
+
+				<label for="ITEM_ANTIFLAG_SAVE">ITEM_ANTIFLAG_SAVE:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_SAVE" name="ITEM_ANTIFLAG_SAVE" value="12"/>
+
+				<label for="ITEM_ANTIFLAG_GIVE">ITEM_ANTIFLAG_GIVE:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_GIVE" name="ITEM_ANTIFLAG_GIVE" value="13"/>
+
+				<label for="ITEM_ANTIFLAG_PKDROP">ITEM_ANTIFLAG_PKDROP:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_PKDROP" name="ITEM_ANTIFLAG_PKDROP" value="14"/>
+
+				<label for="ITEM_ANTIFLAG_STACK">ITEM_ANTIFLAG_STACK:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_STACK" name="ITEM_ANTIFLAG_STACK" value="15"/>
+
+				<label for="ITEM_ANTIFLAG_MYSHOP">ITEM_ANTIFLAG_MYSHOP:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_MYSHOP" name="ITEM_ANTIFLAG_MYSHOP" value="16"/>
+
+				<label for="ITEM_ANTIFLAG_SAFEBOX">ITEM_ANTIFLAG_SAFEBOX:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_SAFEBOX" name="ITEM_ANTIFLAG_SAFEBOX" value="17"/>
+
+				<label for="ITEM_ANTIFLAG_WOLFMAN">ITEM_ANTIFLAG_WOLFMAN:</label>
+				<input type="checkbox" id="ITEM_ANTIFLAG_WOLFMAN" name="ITEM_ANTIFLAG_WOLFMAN" value="18"/>
+
+				<!--result-->
+				<label for="antiflag-result">Result:</label>
+				<input type="number" id="antiflag-result" name="antiflag-result" readonly disabled />
+				<!--reverse-->
+				<label for="antiflag-reverse">Reverse:</label>
+				<input type="number" id="antiflag-reverse" name="antiflag-reverse"/>
+			</form>
+		</article>
+		<footer>
+			<script src="item_flags.js"></script>
+		</footer>
+	</body>
+</html>

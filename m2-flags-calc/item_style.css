@@ -1,0 +1,13 @@
+
+body
+{
+	background-color: antiquewhite;
+	color: saddlebrown;
+}
+
+label:before
+{
+	content: '\A';
+	white-space: pre;
+}
+
