@@ -1,4 +1,4 @@
-# How to manually debug with VisualStudio
+# How to manually debug crashes with VisualStudio
 
 1. Go to Debug -> Options and Settings... [ClickMe](https://i.imgur.com/N6l5hUE.png)
 
