@@ -2,14 +2,15 @@
 Create a new file called `Metin2Client_CompileRelease.bat` inside `\Srcs\Client\` containing:
 ```batch
 @echo off
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
-REM msbuild metin2client.sln /property:Configuration=Release -target:Clean
-msbuild metin2client.sln /property:Configuration=Release
+CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+cd %~dp0
+msbuild metin2client.sln /property:Configuration=Release /maxcpucount -target:Clean
+msbuild metin2client.sln /property:Configuration=Release /maxcpucount
 pause
 ```
-It is currently compiling in Release mode. (the Clean target is commented; uncomment it if you need to rebuild)
+It is currently cleaning and compiling in Release mode. Disable "Clean" if you don't need it.
 
-The flag additional option `/maxcpucount` for `msbuild` will use more threads for compilation.
+The flag additional option `/maxcpucount` for `msbuild` will use more threads for compilation. Remove it if you don't use it.
 
 _Note: this is for vs2017; if you use other versions, be sure to match the correct path_
 
