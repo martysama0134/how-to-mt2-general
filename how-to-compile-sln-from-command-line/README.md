@@ -9,6 +9,8 @@ pause
 ```
 It is currently compiling in Release mode. (the Clean target is commented; uncomment it if you need to rebuild)
 
+The flag additional option `/maxcpucount` for `msbuild` will use more threads for compilation.
+
 _Note: this is for vs2017; if you use other versions, be sure to match the correct path_
 
 _Note2: you can do this for server (for windows) as well._
