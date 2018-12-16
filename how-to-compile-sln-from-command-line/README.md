@@ -2,7 +2,8 @@
 Create a new file called `Metin2Client_CompileRelease.bat` inside `\Srcs\Client\` containing:
 ```batch
 @echo off
-CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+REM msbuild metin2client.sln /property:Configuration=Release -target:Clean
 msbuild metin2client.sln /property:Configuration=Release
 pause
 ```
