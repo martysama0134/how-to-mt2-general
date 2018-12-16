@@ -7,7 +7,9 @@ REM msbuild metin2client.sln /property:Configuration=Release -target:Clean
 msbuild metin2client.sln /property:Configuration=Release
 pause
 ```
-_Note: this is for vs2017 - target Release; if you use other versions, be sure to match the correct path_
+It is currently compiling in Release mode. (the Clean target is commented; uncomment it if you need to rebuild)
+
+_Note: this is for vs2017; if you use other versions, be sure to match the correct path_
 
 _Note2: you can do this for server (for windows) as well._
 
