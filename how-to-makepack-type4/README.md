@@ -1,3 +1,7 @@
+# How-to makepack type4
+By using `MakePack.exe` (you need to compile it), you can use this python script to generate type4 packs.
+The generated .dat key must be added in the package/ folder server-side.
+
 ### EN
 1. drag&drop the folder to pack on `MakePackHelper_List.bat`
 (it will generate `<foldername>.txt`) [ClickMe](https://i.imgur.com/a5E5u6E.png)
