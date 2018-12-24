@@ -11,7 +11,7 @@
 	Go inside Linker -> Debugging [ClickMe](https://i.imgur.com/vf6Y6yU.png)
 	
 	* Generate Debug Info -> Yes (/DEBUG)
-	* Map Exports -> Yes (/MAPINFO:EXPORTS)
+	* ~Map Exports -> Yes (/MAPINFO:EXPORTS)~ _(not required)_
 	* Debuggable Assembly -> Yes (/ASSEMBLYDEBUG)
 
 3. Compile and execute the launcher.
