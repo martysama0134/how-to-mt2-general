@@ -19,3 +19,5 @@ The generated .dat key must be added in the package/ folder server-side.
 (creerà `Pack/` contenente la `.dat`, `Index` e gli eix epk [ClickMe](https://i.imgur.com/pEvMWDx.png))
 
 3. carica la `.dat` su `package/` server-side e riavvia il game
+
+_Note: just change CSHybridEncryptExeNameList to SecurityExtNameList for packing everything in type2_
