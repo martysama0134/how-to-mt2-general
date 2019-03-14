@@ -20,4 +20,4 @@ The generated .dat key must be added in the package/ folder server-side.
 
 3. carica la `.dat` su `package/` server-side e riavvia il game
 
-_Note: just change CSHybridEncryptExeNameList to SecurityExtNameList for packing everything in type2_
+_Note: just change CSHybridEncryptExeNameList to SecurityExtNameList for packing everything in type2 instead of type4_
