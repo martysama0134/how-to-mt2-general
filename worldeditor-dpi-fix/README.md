@@ -13,4 +13,4 @@ After that, you may also have a little problem in Windows 10 if you changed the 
 
 You can solve it by going to **Home -> Screen -> Scale and layout** to 100% (even 125% is fine) like [this](http://i.imgur.com/QKRtdq7.png).
 
-If you still have problems, check the properties of the WorldEditor program and in the **Compatibility** tab disable the DPI override option like [this](http://i.imgur.com/Aklna8L.png).
+If you still have problems, check the properties of the WorldEditor program and in the **Compatibility** tab disable the DPI override option like [this](http://i.imgur.com/Aklna8L.png) or like [this](https://i.imgur.com/tQHShNx.png).
