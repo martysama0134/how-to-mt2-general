@@ -6,15 +6,15 @@ You will be able to choice amongst: quest icon, text color, blink effect (like w
 You just need to replace 2 little things:
 
 In interfaceModule.py, replace BINARY_RecvQuest with:
-[Python] interfaceModule.codepart.py - Pastebin.com
+[interfaceModule.codepart.py](interfaceModule.codepart.py)
 
 In questlib.lua, replace send_letter_ex with:
-[Lua] questlib.codepart.lua - Pastebin.com
+[questlib.codepart.lua](questlib.codepart.lua)
 
 ### Explanation:
 - the 2° argument of send_letter_ex will support multiple parameters:
 
-	- green|blue|purple|golden|fucsia|aqua and so on (you can add them in BINARY_RecvQuest by adding new colors 0xFF+#HEX; Color Picker Online)
+	- green|blue|purple|golden|fucsia|aqua and so on (you can add them in BINARY_RecvQuest by adding new colors 0xFF+#HEX; [Color Picker Online](https://www.w3schools.com/colors/colors_picker.asp))
 	- blink (the quest will flash like the whisper messages)
 	- ex (a dummy tag to separate it from "info" and "item")
 
