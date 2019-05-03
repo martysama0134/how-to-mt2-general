@@ -28,27 +28,27 @@ In questlib.lua, replace send_letter_ex with:
 
 ### Examples:
 
-1. [![Result Label](http://i.imgur.com/3n9yRqF.png)](http://i.imgur.com/3n9yRqF.png)
+- [![Result Label](http://i.imgur.com/3n9yRqF.png)](http://i.imgur.com/3n9yRqF.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "green,blink,ex", "scroll_open_green.tga")```
 
-1. [![Result Label](http://i.imgur.com/M8MMP3N.png)](http://i.imgur.com/M8MMP3N.png)
+- [![Result Label](http://i.imgur.com/M8MMP3N.png)](http://i.imgur.com/M8MMP3N.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "blue,blink,ex", "scroll_open_blue.tga")```
 
-1. [![Result Label](http://i.imgur.com/gkEolrr.png)](http://i.imgur.com/gkEolrr.png)
+- [![Result Label](http://i.imgur.com/gkEolrr.png)](http://i.imgur.com/gkEolrr.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "purple,blink,ex", "scroll_open_purple.tga")```
 
-1. [![Result Label](http://i.imgur.com/AH6tgAW.png)](http://i.imgur.com/AH6tgAW.png)
+- [![Result Label](http://i.imgur.com/AH6tgAW.png)](http://i.imgur.com/AH6tgAW.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open_golden.tga")```
 
-1. [![Result Label](http://i.imgur.com/7uBSyfS.png)](http://i.imgur.com/7uBSyfS.png)
+- [![Result Label](http://i.imgur.com/7uBSyfS.png)](http://i.imgur.com/7uBSyfS.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open.tga")```
 
-1. [![Result Label](http://i.imgur.com/qvhg6Ql.png)](http://i.imgur.com/qvhg6Ql.png)
+- [![Result Label](http://i.imgur.com/qvhg6Ql.png)](http://i.imgur.com/qvhg6Ql.png)
 
 	```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open_green.tga")```
 
