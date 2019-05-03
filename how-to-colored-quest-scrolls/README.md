@@ -28,6 +28,25 @@ In questlib.lua, replace send_letter_ex with:
 
 ### Examples:
 
+
+[![Result Label](http://i.imgur.com/3n9yRqF.png)](http://i.imgur.com/3n9yRqF.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "green,blink,ex", "scroll_open_green.tga")```
+
+[![Result Label](http://i.imgur.com/M8MMP3N.png)](http://i.imgur.com/M8MMP3N.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "blue,blink,ex", "scroll_open_blue.tga")```
+
+[![Result Label](http://i.imgur.com/gkEolrr.png)](http://i.imgur.com/gkEolrr.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "purple,blink,ex", "scroll_open_purple.tga")```
+
+[![Result Label](http://i.imgur.com/AH6tgAW.png)](http://i.imgur.com/AH6tgAW.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open_golden.tga")```
+
+[![Result Label](http://i.imgur.com/7uBSyfS.png)](http://i.imgur.com/7uBSyfS.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open.tga")```
+
+[![Result Label](http://i.imgur.com/qvhg6Ql.png)](http://i.imgur.com/qvhg6Ql.png)
+```send_letter_ex(localeInfo.LanguageOptionTitle, "golden,blink,ex", "scroll_open_green.tga")```
+
 _Note: As you can imagine, the only limitation is that the color in N won't appear. (it will require additional code and work, so just forget it)_
 
 ### Download:
