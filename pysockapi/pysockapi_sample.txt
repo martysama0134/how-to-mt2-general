@@ -1,0 +1,4 @@
+import pysockapi
+reload(pysockapi)
+sock=pysockapi.SOCKAPI(host=("1.2.3.4", 13000), pwd="SHOWMETHEMONEY", type="PORT")
+sock.Send(cmd=("NOTICE 123", "NOTICE 456"))
