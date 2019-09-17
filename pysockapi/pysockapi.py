@@ -1,213 +1,280 @@
 #!/usr/local/bin/python2.7
-import getopt	#getopt.getopt
-import os		#os.path.exists
-import socket	#socket.socket, socket.connect, socket.send, socket.recv, socket.close
-import sys		#sys.exit
-import time		#time.sleep
+#!/usr/bin/env python
 
-class PySockModule:
-	def __init__(self):
+# Copyright (c) 2013, martysama0134
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+#
+# Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+# Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+# Neither the name of martysama0134 nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import socket	# socket.socket, socket.connect, socket.send, socket.recv, socket.close
+import time		# time.sleep
+"""PySockAPI Module
+It's a simple module that uses socket connection to send commands to a metin2 server (via adminpage)
+
+Usage:
+	>>> from pysockapi import SOCKAPI
+	>>> m_sock = SOCKAPI(host="localhost", pwd="SHOWMETHEMONEY", type="PORT")
+	>>> m_sock.Send(cmd=("EVENT xmas_tree 4",), ret=False)
+
+	Or:
+	>>> import pysockapi
+	>>> m_sock = SOCKAPI(host="localhost", pwd="SHOWMETHEMONEY", type="P2P_PORT")
+	>>> m_sock.Send(cmd=SOCKAPI2_SHUTDOWN, ret=False)
+
+Info: (adminpage via PORT ports)
+	### NO IP/PASSWORD REQUIRED
+	#is_server_up (it returns YES or NO if the server is shutdowned)
+		IS_SERVER_UP
+	#is_passpod_up (it returns YES or NO if passpod is used)
+		IS_PASSPOD_UP
+	#user_count (it returns the count of the players on) (nb: it requires validation if adminpageip is not empty)
+		USER_COUNT
+	#check_p2p_connections (it returns the count of the current desc connections)
+		CHECK_P2P_CONNECTIONS
+	#packet_info (it generates a profile_log.txt file and returns OK)
+		PACKET_INFO
+	#profile (it generates a profile.txt file and returns OK)
+		PROFILE
+	#delete_awardid %11d (it deletes an item_award id)
+		DELETE_AWARDID <award_id>
+			Example:	DELETE_AWARDID 4810
+
+	### YES IP/PASSWORD REQUIRED
+	#notice %43s (it sends a notice to all the games)
+		NOTICE <message>
+			Example:	NOTICE This is a test
+	#close_passpod (it closes passpod)
+		CLOSE_PASSPOD
+	#open_passpod (it opens passpod)
+		OPEN_PASSPOD
+	#shutdown (it performs a shutdown of all the game in 10 secs)
+		SHUTDOWN
+	#shutdown_only (it performs a shutdown of the relative game in 10 secs)
+		SHUTDOWN_ONLY
+	#dc %30s (it /dc crashes all the players inside the relative <account_name>) [LOGIN_MAX_LEN=30]
+		DC <account_name>
+			Example:	DC youraccount
+	#reload_crc (it reloads the CRC file and returns OK)
+		RELOAD_CRC
+	#check_client_version (it performs a clientversion check to all the online players and returns OK)
+		CHECK_CLIENT_VERSION
+	#reload &%c (it performs a classic /reload)
+		RELOAD <&type>
+			type	default:general, a:admin, f:fishing, p:player, q:quest, s:string, u:usercount
+			Example:	RELOAD p
+	#event %s %d (it performs a classic /event <name> <value> and returns CHANGE or FAIL)
+		EVENT <eventflag> <value>
+			Example:	EVENT xmas_tree 4
+	#block_chat %s %d (it performs a classic /block_chat <nick> <duration> and returns '' or FAIL)
+		BLOCK_CHAT <nick> <duration>
+			Example:	BLOCK_CHAT [GA]LoLLo 1h
+	#priv_empire %d %d %d %d (it performs a classic /priv_empire <empire> <type> <value> <duration> and returns SUCCESS or FAIL)
+		PRIV_EMPIRE <empire> <type> <value> <duration>
+			empire	0-3 0==all, 1==red, 2==yellow, 3==blue)
+			type	1:item_drop, 2:gold_drop, 3:gold10_drop, 4:exp
+			value	percent
+			dur.	hour
+			Example:	PRIV_EMPIRE 0 4 200 72h
+	#block_exception %s %d (it inserts/deletes <login_name> into/from account.block_exception based on the <rule_id>)
+		BLOCK_EXCEPTION <login_name> <rule_id>
+			rule_id	1:add, 2: del
+
+"""
+__author__		= "martysama0134"
+__copyright__	= "Copyright (c) 2013 martysama0134"
+__date__		= "2012-10-08"
+__license__		= "New BSD License"
+__version__		= "3.0"
+
+class PySockAPIError(Exception): pass
+
+# default-data
+dftHOSTPORT =	("127.0.0.1", 13000)
+dftADMINPWD =	"SHOWMETHEMONEY"
+dftCOMMAND =	("NOTICE /!\\ ",)
+# file
+dftCONFILE =	"pysockapi_con.txt"
+
+class SOCKAPI:
+	def __init__(self, host = dftHOSTPORT, pwd = dftADMINPWD, type = "PORT"):
 		#con-data
-		self.HOSTPORT=None
-		self.ADMINPWD=None
-		self.COMMAND=None
-		#default-data
-		self.dftHOSTPORT=("123.456.78.90",13000)
-		self.dftADMINPWD="SHOWMETHEMONEY"
-		self.dftCOMMAND=("NOTICE /!\\ ",)
-		#cleanlist
-		self.NOWAY=(0,"0","",None)
-		#file
-		self.PYSOCK_HLPFILE="pysock_hlp.txt"
-		self.PYSOCK_CMDFILE="pysock_cmd.txt"
-		self.PYSOCK_CONFILE="pysock_con.txt"
-		#args
-		self.PYSOCK_SHRTARG='c:df:ghr:s:'
-		self.PYSOCK_LONGARG=('command=','default','file=','get','help','raw=','set=')
+		self.HOSTPORT = host
+		self.ADMINPWD = pwd
+		self.APITYPE = type
 
-		#analyze argv
-		try:
-			self.optlist, self.args = getopt.getopt(sys.argv[1:],self.PYSOCK_SHRTARG,self.PYSOCK_LONGARG)
-		except getopt.GetoptError, err:
-			print str(err)
-			sys.exit(2)
-		#analyze optlist
-		self.ArgAnalyze(self.optlist)
-
-	def Docs():
-		"""\
-		Intro
-		\tPySock is a simple program that uses socket connection
-		\t\tto send a little query to a metin2 server (using adminpage)
-
-
-		ArgvList:
-		#(-c or --command) send command
-		\t./pysock.py -c "<command>"
-		#(-g or --get) get con-data from con-file (pysock_con.txt) and send a command
-		\t./pysock.py -g -c "<command>"
-		#(-f or --file) send command from file
-		\t./pysock.py -f "<file>"
-		\t\tExample:\t./pysock.py -f "mysock_cmd.txt"
-		#(-h or --help) help
-		\t./pysock.py -h
-		#(-s or --set) set con-data to con-file (pysock_con.txt) and send a command
-		\t./pysock.py -s "<host>:<port>:<pwd>"
-		\t\tExample:\t./pysock.py -s "123.456.78.90:13000:SHOMETHEMONEY" -c "NOTICE 1;NOTICE 2;NOTICE 3"
-		#(-r or --raw) raw mode
-		\t./pysock.py -r "<host:port> <adminpwd> <command>"
-		\t\tExample:\t./pysock.py -r "123.456.78.90:13000 SHOWMETHEMONEY NOTICE 1;NOTICE 2;USER_COUNT"
-
-		CommandList:
-		#block_chat %s %d
-		\tBLOCK_CHAT <nick> <duration>
-		\t\tExample:\tBLOCK_CHAT [GA]LoLLo 1h
-		#block_exception
-		\tBLOCK_EXCEPTION
-		#check_client
-		\tCHECK_CLIENT
-		#close_passpod
-		\tCLOSE_PASSPOD
-		#dc %s
-		\tDC <account>
-		\t\tExample:\tDC tuoaccount
-		#event %s %d
-		\tEVENT <eventflag> <value>
-		\t\tExample:\tEVENT xmas_tree 4
-		#notice %s
-		\tNOTICE <message>
-		\t\tExample:\tNOTICE This is a test
-		#is_passpod_up
-		\tIS_PASSPOD_UP
-		#is_server_up
-		\tIS_SERVER_UP
-		#priv_empire %d %d %d %d
-		\tPRIV_EMPIRE <empire> <type> <value> <duration>
-		\t\tempire\t0-3  0==all, 1==red, 2==yellow, 3==blue)
-		\t\ttype\t1:item_drop, 2:gold_drop, 3:gold10_drop, 4:exp
-		\t\tvalue\tpercent
-		\t\tdur.\thour
-		\t\tExample:\tPRIV_EMPIRE 0 4 200 72h
-		#profile
-		\tPROFILE
-		#reload &%s
-		\tRELOAD <&type>
-		\t\ttype\tdefault:general, a:admin, c:cube, f:fish, p:player, q:quest, s:string
-		#reload_crc
-		\tRELOAD_CRC
-		#shutdown
-		\tSHUTDOWN
-		#shutdown_only
-		\tSHUTDOWN_ONLY
-		#unknown
-		\tUNKNOWN
-		#user_count
-		\tUSER_COUNT
-
-		Created by martysama0134 - 2012 - All rights reserved
-		"""
-
-	def SendPacket(self, HOSTPORT=None, ADMINPWD=None, COMMAND=None):
-		if(HOSTPORT in self.NOWAY): HOSTPORT=self.dftHOSTPORT
-		if(ADMINPWD in self.NOWAY): ADMINPWD=self.dftADMINPWD
-		if(COMMAND in self.NOWAY): COMMAND=self.dftCOMMAND
+	def Send(self, cmd = dftCOMMAND, ret = True):
 		try:
 			#connect
-			con=socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.SOL_TCP)
-			con.connect(HOSTPORT)
-			#send
-			CMDSEND="@%s\n@%s\n" % (ADMINPWD,"\n@".join(COMMAND))
-			print CMDSEND
-			con.send(CMDSEND)
-			#receive
-			print repr(con.recv(1024))#escape
-			time.sleep(0.1)#required
-			#close
-			con.close()
-			print "<Pysock> Socket inviato con successo"
-		except socket.error:
-			assert False, "<Pysock> Socket failed, con-data maybe wrong (%s, %s, %s)"%(HOSTPORT[0], HOSTPORT[1], ADMINPWD)
-
-	def ArgAnalyze(self, optlist):
-		for o, a in optlist:
-			#help
-			if o in ('-h', '--help'):
-				try:
-					help(self.Docs)
-					#print self.Docs.__doc__
-				except KeyboardInterrupt:
-					pass
-				sys.exit()
-			#send command from arg
-			elif o in ('-c', '--command'):
-				#analyze string-arg
-				try:
-					self.COMMAND=a.split(";")
-				except IndentationError, err:
-					assert False, "<Pysock> Except %s" % (err,)
-				self.SendPacket(self.HOSTPORT, self.ADMINPWD, self.COMMAND)
-			#load default con-data
-			elif o in ('-d', '--default'):
-				self.HOSTPORT=self.dftHOSTPORT
-				self.ADMINPWD=self.dftADMINPWD
-				self.COMMAND=self.dftCOMMAND
-			#load command from file
-			elif o in ('-f', '--file'):
-				#analyze string-arg
-				if(os.path.exists(a)):
-					#read file
-					self.COMMAND=open(a,"r").read().split("\n")
-					#send
-					self.SendPacket(self.HOSTPORT, self.ADMINPWD, self.COMMAND)
-				else:
-					assert False, "<Pysock> File %s not found" % (a,)
-			#load con-data from file
-			elif o in ('-g', '--get'):
-				#analyze string-arg
-				if(os.path.exists(self.PYSOCK_CONFILE)):
-					#read file
-					self.CONREAD=open(self.PYSOCK_CONFILE,"r").read()
-					#set con-data
-					try:
-						self.CONAN=self.CONREAD.split(":",2)
-						#set con-data
-						self.HOSTPORT=(self.CONAN[0],int(self.CONAN[1]))
-						self.ADMINPWD=self.CONAN[2].replace("\n","").replace("\r","")
-					except IndentationError, err:
-						assert False, "<Pysock> Except %s" % (err,)
-				else:
-					assert False, "<Pysock> File %s not found" % (self.PYSOCK_CONFILE,)
-			#create a manual string
-			elif o in ('-r', '--raw'):
-				#analyze string-arg
-				try:
-					a=a.split(" ",2)
-				except IndentationError, err:
-					assert False, "<Pysock> Except %s" % (err,)
-				#set data
-				myHOSTPORT=a[0].split(":",1)
-				self.HOSTPORT=(myHOSTPORT[0],int(myHOSTPORT[1]))
-				self.ADMINPWD=a[1]
-				self.COMMAND=a[2].split(";")
+			con = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.SOL_TCP)
+			con.connect(self.HOSTPORT)
+			if self.APITYPE=="PORT":
 				#send
-				self.SendPacket(self.HOSTPORT, self.ADMINPWD, self.COMMAND)
-			#save your data connection
-			elif o in ('-s', '--set'):
-				#analyze string-arg
-				try:
-					self.CONAN=a.split(":",2)
-				except IndentationError, err:
-					assert False, "<Pysock> Except %s" % (err,)
-				#save hostport
-				f1=open(self.PYSOCK_CONFILE,"w")
-				f1.write(a)
-				del f1
-				#set con-data
-				self.HOSTPORT=(self.CONAN[0],int(self.CONAN[1]))
-				self.ADMINPWD=self.CONAN[2]
-			#invalid args
-			else:
-				assert False, "<Pysock> Unhandled %s option" % (o,)
+				CMDSEND = "@%s\n@%s\n" % (self.ADMINPWD, "\n@".join(cmd))
+				# CMDSEND = "@".join(cmd)
+				print CMDSEND
+				con.send(CMDSEND)
+				#receive
+				# print repr(con.recv(1024))#escape
+				print con.recv(1024)[15:]
+				time.sleep(0.1)#required
+				#close
+				con.close()
+				print "<Pysock> Socket inviato con successo"
+			elif self.APITYPE=="P2P_PORT":
+				#send
+				CMDSEND = cmd
+				print CMDSEND
+				con.send(CMDSEND)
+				#receive
+				print repr(con.recv(1024))#escape
+				# print con.recv(1024)[15:]
+				time.sleep(0.1)#required
+				#close
+				con.close()
+				print "<Pysock> Socket inviato con successo"
+		except socket.error:
+			raise PySockAPIError, "Socket failed, con-data maybe wrong (%s, %s, %s)"%(self.HOSTPORT[0], self.HOSTPORT[1], self.ADMINPWD)
 
-avvia=PySockModule
-avvia()
+if __name__ == "__main__":
+	def Usage():
+		print '''Usage:
+	#(-c or --command) send command
+		./pysock.py -c "<command>"
+	#(-g or --get) get con-data from con-file (pysock_con.txt) and send a command
+		./pysock.py -g -c "<command>"
+	#(-f or --file) send command from file (1.)
+		./pysock.py -f "<file>"
+	#(-h or --help) help
+		./pysock.py -h
+	#(-s or --set) set con-data to con-file (pysock_con.txt) and send a command (2.)
+		./pysock.py -s "<host>:<port>:<pwd>"
+	#(-r or --raw) raw mode (3.)
+		./pysock.py -r "<host:port> <adminpwd> <command>"
+
+Examples:
+	1. # ./pysock.py -f "mysock_cmd.txt"
+	2. # ./pysock.py -s "123.456.78.90:13000:SHOWMETHEMONEY" -c "NOTICE 1;NOTICE 2;NOTICE 3"
+	3. # ./pysock.py -r "173.194.35.6:13003 SHOWMETHEMONEY NOTICE 1;NOTICE 2;USER_COUNT"
+'''
+
+	import getopt	# getopt.getopt
+	import os		# os.path.exists
+	import sys		# sys.exit
+	# args
+	PYSOCK_SHRTARG = 'c:df:ghr:s:'
+	PYSOCK_LONGARG = ('command=', 'default', 'file=', 'get', 'help', 'raw=', 'set=')
+
+	sys_exit = sys.exit
+	# analyze argv
+	try:
+		optlist, args = getopt.getopt(sys.argv[1:], PYSOCK_SHRTARG, PYSOCK_LONGARG)
+	except getopt.GetoptError, err:
+		sys_exit(err)
+
+	OP_HOSTPORT = None
+	OP_ADMINPWD = None
+	OP_COMMAND = None
+
+	# analyze optlist
+	for o, a in optlist:
+		# help
+		if o in ('-h', '--help'):
+			sys_exit(Usage())
+		# send command from arg
+		elif o in ('-c', '--command'):
+			# analyze string-arg
+			try:
+				OP_COMMAND = a.split(";")
+			except IndentationError, err:
+				raise PySockAPIError, "Except %s"%err
+		# load default con-data
+		elif o in ('-d', '--default'):
+			OP_HOSTPORT = dftHOSTPORT
+			OP_ADMINPWD = dftADMINPWD
+			OP_COMMAND = dftCOMMAND
+		# load command from file
+		elif o in ('-f', '--file'):
+			# analyze string-arg
+			if os.path.exists(a):
+				# read file
+				tmp = open(a, "r"); OP_COMMAND = tmp.read().split("\n"); tmp.close(); del tmp
+			else:
+				raise PySockAPIError, "File %s not found"%a
+		# load con-data from file
+		elif o in ('-g', '--get'):
+			# analyze string-arg
+			if os.path.exists(dftCONFILE):
+				# read file
+				tmp = open(dftCONFILE, "r"); conread = tmp.read(); tmp.close(); del tmp
+				# set con-data
+				try:
+					conan = conread.split(":", 2)
+					#set con-data
+					OP_HOSTPORT = (conan[0], int(conan[1]))
+					OP_ADMINPWD = conan[2].replace("\n", "").replace("\r", "")
+				except IndentationError, err:
+					raise PySockAPIError, "Except %s"%err
+			else:
+				raise PySockAPIError, "File %s not found"%dftCONFILE
+		# create a manual string
+		elif o in ('-r', '--raw'):
+			# analyze string-arg
+			try:
+				a = a.split(" ", 2)
+			except IndentationError, err:
+				raise PySockAPIError, "Except %s"%err
+			# set data
+			tmpHOSTPORT = a[0].split(":", 1)
+			OP_HOSTPORT = (tmpHOSTPORT[0], int(tmpHOSTPORT[1]))
+			OP_ADMINPWD = a[1]
+			OP_COMMAND = a[2].split(";")
+		# save your data connection
+		elif o in ('-s', '--set'):
+			# analyze string-arg
+			try:
+				conan = a.split(":", 2)
+			except IndentationError, err:
+				raise PySockAPIError, "Except %s"%err
+			# save hostport
+			f1 = open(dftCONFILE, "w")
+			f1.write(a)
+			del f1
+			# set con-data
+			OP_HOSTPORT = (conan[0], int(conan[1]))
+			OP_ADMINPWD = conan[2]
+		# invalid args
+		else:
+			raise PySockAPIError, "Unhandled %s option"%o
+
+	if (not OP_HOSTPORT) or (not OP_ADMINPWD) or (not OP_COMMAND):
+		sys_exit(Usage())
+
+	sock = SOCKAPI(OP_HOSTPORT, OP_ADMINPWD)
+	sock.Send(OP_COMMAND)
+
+	time.sleep(0.1)
+	#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
