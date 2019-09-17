@@ -1,38 +1,38 @@
-### PySockApi AdminPageTool
+### PySockAPI Module
+It's a simple module that uses socket connection to send commands to a m2 server (via adminpage)
+
+Usage:
+
+```
+#(-c or --command) send command
+	./pysock.py -c "<command>"
+#(-g or --get) get con-data from con-file (pysock_con.txt) and send a command
+	./pysock.py -g -c "<command>"
+#(-f or --file) send command from file (1.)
+	./pysock.py -f "<file>"
+#(-h or --help) help
+	./pysock.py -h
+#(-s or --set) set con-data to con-file (pysock_con.txt) and send a command (2.)
+	./pysock.py -s "<host>:<port>:<pwd>"
+#(-r or --raw) raw mode (3.)
+	./pysock.py -r "<host:port> <adminpwd> <command>"
+```
+
+Examples:
+
+```
+1. # ./pysock.py -f "mysock_cmd.txt"
+2. # ./pysock.py -s "123.456.78.90:13000:SHOWMETHEMONEY" -c "NOTICE 1;NOTICE 2;NOTICE 3"
+3. # ./pysock.py -r "173.194.35.6:13003 SHOWMETHEMONEY NOTICE 1;NOTICE 2;USER_COUNT"
+```
+
+---------------------------------------------------------
+
+#### IT TRANSLATE
 
 PySockApi è un semplice programmino (per freebsd) che da la possibilità di usare l'adminpage direttamente dal proprio server
 (a mo' di localhost) e combinarlo con la shell per fare qualcosa di più automatico, dinamico e sicuro.
 (non testatelo su altri server perché sui syslog appare l'ip di chi lo usa)
-
-#### Dal MySock:
-- `-h` //per visualizzare il manuale del programma
-
-	```
-	./pysockapi.py -h
-	```
-
-- `-m <par.>` //per inviare i comandi da argomento (non usate :; nei comandi!)
-
-	```
-	./pysockapi.py -m "host:porta;@SHOWMETHEMONEY\n@tuocomando\n@ecc ecc\n"
-	```
-
-- `-f <file>` //per inviare i comandi da file
-
-	```
-	./pysockapi.py -f "miofile.txt"
-	```
-
-	Il file dovrà essere impostato così:
-
-	```
-	ip
-	porta
-	@SHOWMETHEMONEY
-	@comando
-	@comando
-	\n (la \n sta ad indicare che deve esserci una linea vuota, potete ommetter tale carattere se volete... ma la linea vuota ci deve essere!)
-	```
 
 Vi ricordo alcune semplici cose:
 - La porta da usare è quella che nel CONFIG è espressa con "PORT:" e non "P2P_PORT:".
