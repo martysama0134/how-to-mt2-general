@@ -28,7 +28,7 @@ def process_dirs(folder=root_dir, pack_prefix=""):
 		virt_path = dir[len(root_dir):]
 		fold_name = dir[len(folder_prefix):]
 		pack_name = pack_prefix+fold_name#os.path.basename(dir)
-		if any([i in fold_name for i in ("guild_", "map_")]):
+		if any([i in fold_name for i in ("guild_", "map_", "metin2_12zi_")]):
 			pack_name = pack_prefix+"maps"
 		outp_path = os.path.join(outp_dir, pack_name, virt_path)
 		# print(virt_path)
