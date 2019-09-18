@@ -5,8 +5,9 @@ root_dir = "."
 indexfile = "Index"
 file_list = {} # list of mapped files [filepath]=packname
 dupl_size = 0 # count all the duplicated files' size
-dele_file = True # delete duplicated files
+dele_file = False # delete duplicated files
 read_indx = True # read from index, otherwise read all folders alphabetically
+indx_newf = True # new index format
 
 def walklevel(some_dir, level=1):
 	some_dir = some_dir.rstrip(os.path.sep)
@@ -31,16 +32,17 @@ def get_folder_list(folder="."):
 		dirs.append(fold_name)
 	return dirs
 
-def read_index():
+def read_index(newFormat=False):
 	dirs = []
 	with open(indexfile) as f1:
 		f1.readline() # skip first line PACK
 		fToggle = False # read only even lines
 		for line in f1.readlines():
-			# skip odd lines
-			fToggle = not fToggle
-			if fToggle:
-				continue
+			# skip odd lines if old format
+			if not newFormat:
+				fToggle = not fToggle
+				if fToggle:
+					continue
 			# skip duplicates
 			line = line.strip()
 			if line not in dirs:
@@ -75,7 +77,7 @@ def process_list(pack_list):
 
 if __name__ == "__main__":
 	if read_indx:
-		process_list(read_index())
+		process_list(read_index(indx_newf))
 	else:
 		process_list(get_folder_list())
 	print("duplicated size: %d" % dupl_size)

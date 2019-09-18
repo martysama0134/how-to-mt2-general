@@ -5,22 +5,24 @@ root_dir = "."
 outp_dir = "d_"
 indexfile = "Index"
 read_indx = True # read from index, otherwise read all folders alphabetically
+indx_newf = True # new index format
 
 def ensure_dir(file_path):
 	directory = os.path.dirname(file_path)
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 
-def read_index():
+def read_index(newFormat=False):
 	dirs = []
 	with open(indexfile) as f1:
 		f1.readline() # skip first line PACK
 		fToggle = False # read only even lines
 		for line in f1.readlines():
-			# skip odd lines
-			fToggle = not fToggle
-			if fToggle:
-				continue
+			# skip odd lines if old format
+			if not newFormat:
+				fToggle = not fToggle
+				if fToggle:
+					continue
 			# skip duplicates
 			line = line.strip()
 			if line not in dirs:
@@ -72,7 +74,7 @@ def process_list(pack_list):
 
 if __name__ == "__main__":
 	if read_indx:
-		process_list(read_index())
+		process_list(read_index(indx_newf))
 	else:
 		process_list(get_folder_list())
 
