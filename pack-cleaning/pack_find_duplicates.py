@@ -5,7 +5,7 @@ root_dir = "."
 indexfile = "Index"
 file_list = {} # list of mapped files [filepath]=packname
 dupl_size = 0 # count all the duplicated files' size
-dele_file = False # delete duplicated files
+dele_file = True # delete duplicated files
 read_indx = True # read from index, otherwise read all folders alphabetically
 indx_newf = True # new index format
 

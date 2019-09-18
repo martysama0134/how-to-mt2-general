@@ -64,8 +64,8 @@ def process_pack(name):
 			ensure_dir(outp_path)
 			try:
 				os.rename(real_path, outp_path)
-			except FileExistsError:
-				print("file %s already existing in output folder" % real_path)
+			except OSError:#FileExistsError:
+				raise Exception("file %s already existing or buggy korean name" % real_path)
 
 def process_list(pack_list):
 	for pack in pack_list:
