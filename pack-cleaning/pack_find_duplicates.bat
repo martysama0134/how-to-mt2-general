@@ -1,2 +1,2 @@
-python pack_find_duplicates.py > res.txt
+python pack_find_duplicates.py > duplicated_files.txt
 pause
