@@ -33,3 +33,10 @@
 	* Debuggable Assembly -> No (/ASSEMBLYDEBUG:DISABLE)
 
 _Note: Whether the target is set on Release or Debug, it's irrelevant_
+
+## How to start a debugging session without attaching
+1. Go to the Solution's property and choose UserInterface as the main project. [ClickMe](https://i.imgur.com/IzcSgDT.png)
+
+2. On UserInterface -> Properties -> Debug, change the working directory to your client path. [ClickMe](https://i.imgur.com/YLzEWlc.png)
+
+3. Now 1) press the green arrow or 2) f5 or 3) Debug->Start debug (visual studio will ask admin privileges due to the launcher's manifests) and enjoy the debugging.
