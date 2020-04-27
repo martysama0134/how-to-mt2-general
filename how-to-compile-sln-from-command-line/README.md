@@ -2,10 +2,13 @@
 Create a new file called `Metin2Client_CompileRelease.bat` inside `\Srcs\Client\` containing:
 ```batch
 @echo off
-CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+REM CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86
 cd %~dp0
-msbuild metin2client.sln /property:Configuration=Release /maxcpucount -target:Clean
-msbuild metin2client.sln /property:Configuration=Release /maxcpucount
+REM msbuild metin2client.sln /property:Configuration=Release /maxcpucount -target:Clean
+REM msbuild metin2client.sln /property:Configuration=Release /maxcpucount
+MSBuild.exe metin2client.sln /p:Configuration=Release /p:Platform=Win32 /maxcpucount
+
 pause
 ```
 It is currently cleaning and compiling in Release mode. Disable "Clean" if you don't need it.
