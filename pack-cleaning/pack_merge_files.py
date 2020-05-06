@@ -5,7 +5,7 @@ root_dir = "."
 outp_dir = "d_"
 indexfile = "Index"
 read_indx = True # read from index, otherwise read all folders alphabetically
-indx_newf = True # new index format
+indx_newf = False # new index format
 
 def ensure_dir(file_path):
 	directory = os.path.dirname(file_path)
