@@ -50,6 +50,7 @@ Lazy to copy the launcher from bin to client, then start the debugger? This can 
 
 	`copy /y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)$(TargetFileName)"`
 
+Now you can press Play (F5) directly.
 
 ## Issues
 1. The debugger can't attach properly to the launcher if the "python" module of Visual Studio has been installed from Visual Studio Installer.
