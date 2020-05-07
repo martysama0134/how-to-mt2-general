@@ -40,3 +40,8 @@ _Note: Whether the target is set on Release or Debug, it's irrelevant_
 2. On UserInterface -> Properties -> Debug, change the working directory to your client path. [ClickMe](https://i.imgur.com/YLzEWlc.png)
 
 3. Now 1) press the green arrow or 2) f5 or 3) Debug->Start debug (visual studio will ask admin privileges due to the launcher's manifests) and enjoy the debugging.
+
+## Issues
+1. The debugger can't attach properly to the launcher if the "python" module of Visual Studio has been installed from Visual Studio Installer.
+
+2. If it doesn't start the debugger at all, disable the Microsoft Symbols from Debug -> Debug -> Symbols [ClickMe](https://i.imgur.com/2ymAPIE.png)
