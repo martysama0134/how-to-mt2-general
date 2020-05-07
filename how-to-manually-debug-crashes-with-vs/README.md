@@ -41,6 +41,16 @@ _Note: Whether the target is set on Release or Debug, it's irrelevant_
 
 3. Now 1) press the green arrow or 2) f5 or 3) Debug->Start debug (visual studio will ask admin privileges due to the launcher's manifests) and enjoy the debugging.
 
+## How to copy the built launcher and start a debugging session automatically
+Lazy to copy the launcher from bin to client, then start the debugger? This can be automated.
+
+1. On UserInterface -> Properties -> General -> Output Directory, the path must have `\\` slashes and NO `/` ones.
+
+2. On UserInterface -> Properties -> Build Events -> Post compilation events -> Command-line: [ClickMe](https://i.imgur.com/WJAV9Zi.png)
+
+	`copy /y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)$(TargetFileName)"`
+
+
 ## Issues
 1. The debugger can't attach properly to the launcher if the "python" module of Visual Studio has been installed from Visual Studio Installer.
 
