@@ -3,9 +3,7 @@ Did you get the "ItemIDRange: NO MORE ITEM ID RANGE" error?
 
 There are many ways to fix this.
 
-My suggestion is to recalculate the mysql player.item.id field.
-
-There are two ways to do so.
+My suggestion is to recalculate the mysql player.item.id field. There are two ways to do so.
 
 1. deleting and recreate `id` but losing the insert order
 
