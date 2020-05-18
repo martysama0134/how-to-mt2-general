@@ -56,11 +56,11 @@ def process_pack(name):
 	for subdir, dirs, files in os.walk(pack_folder):
 		for file in files:
 			# print(os.path.join(subdir, file))
-			real_path = os.path.normpath(os.path.join(subdir, file))
-			virt_path = os.path.normpath(real_path[len(pack_prefix):])
+			real_path = os.path.normpath(os.path.join(subdir, file)).lower()
+			virt_path = os.path.normpath(real_path[len(pack_prefix):]).lower()
 			# print(virt_path)
 			if file_list.has_key(virt_path):
-				top_path = os.path.normpath(os.path.join(file_list[virt_path], virt_path))
+				top_path = os.path.normpath(os.path.join(file_list[virt_path], virt_path)).lower()
 				print("duplicated %s (top %s)" % (real_path, top_path))
 				# calculate full dupl file size
 				dupl_size += os.path.getsize(real_path)
