@@ -69,7 +69,7 @@ def process_pack(name):
 
 def process_list(pack_list):
 	for pack in pack_list:
-		print("processing... %s" % pack)
+		print(("processing... %s" % pack))
 		process_pack(pack)
 
 if __name__ == "__main__":

@@ -59,9 +59,9 @@ def process_pack(name):
 			real_path = os.path.normpath(os.path.join(subdir, file)).lower()
 			virt_path = os.path.normpath(real_path[len(pack_prefix):]).lower()
 			# print(virt_path)
-			if file_list.has_key(virt_path):
+			if virt_path in file_list:
 				top_path = os.path.normpath(os.path.join(file_list[virt_path], virt_path)).lower()
-				print("duplicated %s (top %s)" % (real_path, top_path))
+				print(("duplicated %s (top %s)" % (real_path, top_path)))
 				# calculate full dupl file size
 				dupl_size += os.path.getsize(real_path)
 				# delete them
@@ -72,7 +72,7 @@ def process_pack(name):
 
 def process_list(pack_list):
 	for pack in pack_list:
-		print("processing... %s" % pack)
+		print(("processing... %s" % pack))
 		process_pack(pack)
 
 if __name__ == "__main__":
@@ -80,5 +80,5 @@ if __name__ == "__main__":
 		process_list(read_index(indx_newf))
 	else:
 		process_list(get_folder_list())
-	print("duplicated size: %d" % dupl_size)
+	print(("duplicated size: %d" % dupl_size))
 
