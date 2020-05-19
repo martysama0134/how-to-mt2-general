@@ -116,33 +116,33 @@ class SOCKAPI:
 				#send
 				CMDSEND = "@%s\n@%s\n" % (self.ADMINPWD, "\n@".join(cmd))
 				# CMDSEND = "@".join(cmd)
-				print CMDSEND
+				print(CMDSEND)
 				con.send(CMDSEND)
 				#receive
 				# print repr(con.recv(1024))#escape
-				print con.recv(1024)[15:]
+				print(con.recv(1024)[15:])
 				time.sleep(0.1)#required
 				#close
 				con.close()
-				print "<Pysock> Socket inviato con successo"
+				print("<Pysock> Socket inviato con successo")
 			elif self.APITYPE=="P2P_PORT":
 				#send
 				CMDSEND = cmd
-				print CMDSEND
+				print(CMDSEND)
 				con.send(CMDSEND)
 				#receive
-				print repr(con.recv(1024))#escape
+				print(repr(con.recv(1024)))#escape
 				# print con.recv(1024)[15:]
 				time.sleep(0.1)#required
 				#close
 				con.close()
-				print "<Pysock> Socket inviato con successo"
+				print("<Pysock> Socket inviato con successo")
 		except socket.error:
-			raise PySockAPIError, "Socket failed, con-data maybe wrong (%s, %s, %s)"%(self.HOSTPORT[0], self.HOSTPORT[1], self.ADMINPWD)
+			raise PySockAPIError("Socket failed, con-data maybe wrong (%s, %s, %s)"%(self.HOSTPORT[0], self.HOSTPORT[1], self.ADMINPWD))
 
 if __name__ == "__main__":
 	def Usage():
-		print '''Usage:
+		print('''Usage:
 	#(-c or --command) send command
 		./pysock.py -c "<command>"
 	#(-g or --get) get con-data from con-file (pysock_con.txt) and send a command
@@ -160,7 +160,7 @@ Examples:
 	1. # ./pysock.py -f "mysock_cmd.txt"
 	2. # ./pysock.py -s "123.456.78.90:13000:SHOWMETHEMONEY" -c "NOTICE 1;NOTICE 2;NOTICE 3"
 	3. # ./pysock.py -r "173.194.35.6:13003 SHOWMETHEMONEY NOTICE 1;NOTICE 2;USER_COUNT"
-'''
+''')
 
 	import getopt	# getopt.getopt
 	import os		# os.path.exists
@@ -173,7 +173,7 @@ Examples:
 	# analyze argv
 	try:
 		optlist, args = getopt.getopt(sys.argv[1:], PYSOCK_SHRTARG, PYSOCK_LONGARG)
-	except getopt.GetoptError, err:
+	except getopt.GetoptError as err:
 		sys_exit(err)
 
 	OP_HOSTPORT = None
@@ -190,8 +190,8 @@ Examples:
 			# analyze string-arg
 			try:
 				OP_COMMAND = a.split(";")
-			except IndentationError, err:
-				raise PySockAPIError, "Except %s"%err
+			except IndentationError as err:
+				raise PySockAPIError("Except %s"%err)
 		# load default con-data
 		elif o in ('-d', '--default'):
 			OP_HOSTPORT = dftHOSTPORT
@@ -204,7 +204,7 @@ Examples:
 				# read file
 				tmp = open(a, "r"); OP_COMMAND = tmp.read().split("\n"); tmp.close(); del tmp
 			else:
-				raise PySockAPIError, "File %s not found"%a
+				raise PySockAPIError("File %s not found"%a)
 		# load con-data from file
 		elif o in ('-g', '--get'):
 			# analyze string-arg
@@ -217,17 +217,17 @@ Examples:
 					#set con-data
 					OP_HOSTPORT = (conan[0], int(conan[1]))
 					OP_ADMINPWD = conan[2].replace("\n", "").replace("\r", "")
-				except IndentationError, err:
-					raise PySockAPIError, "Except %s"%err
+				except IndentationError as err:
+					raise PySockAPIError("Except %s"%err)
 			else:
-				raise PySockAPIError, "File %s not found"%dftCONFILE
+				raise PySockAPIError("File %s not found"%dftCONFILE)
 		# create a manual string
 		elif o in ('-r', '--raw'):
 			# analyze string-arg
 			try:
 				a = a.split(" ", 2)
-			except IndentationError, err:
-				raise PySockAPIError, "Except %s"%err
+			except IndentationError as err:
+				raise PySockAPIError("Except %s"%err)
 			# set data
 			tmpHOSTPORT = a[0].split(":", 1)
 			OP_HOSTPORT = (tmpHOSTPORT[0], int(tmpHOSTPORT[1]))
@@ -238,8 +238,8 @@ Examples:
 			# analyze string-arg
 			try:
 				conan = a.split(":", 2)
-			except IndentationError, err:
-				raise PySockAPIError, "Except %s"%err
+			except IndentationError as err:
+				raise PySockAPIError("Except %s"%err)
 			# save hostport
 			f1 = open(dftCONFILE, "w")
 			f1.write(a)
@@ -249,7 +249,7 @@ Examples:
 			OP_ADMINPWD = conan[2]
 		# invalid args
 		else:
-			raise PySockAPIError, "Unhandled %s option"%o
+			raise PySockAPIError("Unhandled %s option"%o)
 
 	if (not OP_HOSTPORT) or (not OP_ADMINPWD) or (not OP_COMMAND):
 		sys_exit(Usage())
