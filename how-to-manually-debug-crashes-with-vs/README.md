@@ -56,3 +56,13 @@ Now you can press Play (F5) directly.
 1. The debugger can't attach properly to the launcher if the "python" module of Visual Studio has been installed from Visual Studio Installer.
 
 2. If it doesn't start the debugger at all, disable the Microsoft Symbols from Debug -> Debug -> Symbols [ClickMe](https://i.imgur.com/2ymAPIE.png)
+
+3. If the debug target can't read the .pdb files (Debug -> Windows -> Modules Window)
+
+	- For Debug target:
+
+		Try on UserInterface -> Properties -> Linker -> Debug -> Generate database -> `$(IntDir)$(TargetName).pdb`
+
+	- For Release target:
+
+		Try on UserInterface -> Properties -> Linker -> Debug -> Generate database -> `$(TargetDir)$(TargetName).pdb`
