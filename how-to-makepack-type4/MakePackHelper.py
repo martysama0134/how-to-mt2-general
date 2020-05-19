@@ -45,7 +45,7 @@ List FileList
 """
 
 def MPH_List(packName):
-	print "Processing... %s" % packName
+	print("Processing... %s" % packName)
 	packDir = os.path.join(packName, "")
 	packLen = len(packDir)
 
@@ -82,7 +82,7 @@ def MPH_List(packName):
 
 if __name__ == "__main__":
 	def Usage():
-		print '''Usage: MakePackHelper.py --[extract|list|pack] [pack_name]'''
+		print('''Usage: MakePackHelper.py --[extract|list|pack] [pack_name]''')
 	import getopt
 	import sys
 	try:
@@ -99,6 +99,6 @@ if __name__ == "__main__":
 				MPH_Pack(a)
 			else:
 				sys.exit(Usage())
-	except getopt.GetoptError, err:
+	except getopt.GetoptError as err:
 		sys.exit(err)
 #
