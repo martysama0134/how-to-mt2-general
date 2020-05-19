@@ -2,7 +2,9 @@
 #### @martysama0134 pack-cleaning scripts ####
 import os
 
+pack_dir = "newpack" # "." otherwise
 outp_idx = "newIndex"
+indx_newf = False # new index format
 
 def walklevel(some_dir, level=1):
 	some_dir = some_dir.rstrip(os.path.sep)
@@ -30,9 +32,11 @@ def get_folder_list(folder="."):
 def process_list(pack_list):
 	with open(outp_idx, "w") as f1:
 		f1.write("PACK\n")
-		f1.write("".join([("*\n%s\n" % i) for i in pack_list])) #old format
-		# f1.write("\n".join(pack_list)) #new offy format
+		if indx_newf:
+			f1.write("\n".join(pack_list)) #new offy format
+		else:
+			f1.write("".join([("*\n%s\n" % i) for i in pack_list])) #old format
 
 if __name__ == "__main__":
-	process_list(get_folder_list())
+	process_list(get_folder_list(pack_dir))
 
