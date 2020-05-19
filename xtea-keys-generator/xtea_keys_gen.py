@@ -9,8 +9,8 @@ __license__		= "New BSD License"
 __url__			= "https://github.com/martysama0134/how-to-mt2-general/tree/master/xtea-keys-generator"
 __version__		= "1.1.0"
 
-def swapHex(basestring): # just for eternexus
-	asal = [basestring[i:i+2] for i in range(0, len(basestring), 2)]
+def swapHex(str1): # just for eternexus
+	asal = [str1[i:i+2] for i in range(0, len(str1), 2)]
 	asal.reverse()
 	return ''.join(asal)
 
