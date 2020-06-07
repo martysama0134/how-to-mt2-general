@@ -5,9 +5,15 @@ root_dir = "."
 indexfile = "Index"
 file_list = {} # list of mapped files [filepath]=packname
 dupl_size = 0 # count all the duplicated files' size
-dele_file = True # delete duplicated files
+dele_file = False # delete duplicated files
+move_file = True # move duplicated files instead of deleting them
 read_indx = True # read from index, otherwise read all folders alphabetically
 indx_newf = False # new index format
+
+def ensure_dir(file_path):
+	directory = os.path.dirname(file_path)
+	if not os.path.exists(directory):
+		os.makedirs(directory)
 
 def walklevel(some_dir, level=1):
 	some_dir = some_dir.rstrip(os.path.sep)
@@ -65,7 +71,16 @@ def process_pack(name):
 				# calculate full dupl file size
 				dupl_size += os.path.getsize(real_path)
 				# delete them
-				if dele_file:
+				if move_file:
+					move_path = os.path.normpath(os.path.join("oldpack", real_path))
+					# make dirs and move
+					ensure_dir(move_path)
+					try:
+						os.rename(real_path, move_path)
+					except OSError:#FileExistsError:
+						raise Exception("file %s [%s] already existing or buggy korean name" % (real_path, move_path))
+
+				elif dele_file:
 					os.remove(real_path)
 				continue
 			file_list[virt_path] = name
