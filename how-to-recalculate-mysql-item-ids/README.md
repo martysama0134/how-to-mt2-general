@@ -24,7 +24,7 @@ My suggestion is to recalculate the mysql player.item.id field. There are two wa
 _Note: Both of them will have new `id`s so you can't track them from the old log.log anymore._
 
 # Update the ITEM_ID_RANGE range value
-After you update player.item, if you have many items, it may still keep cause this error because the range should be adjusted.
+After you update `player.item`, if you have many items, it may still keep cause this error because the range should be adjusted.
 
 Edit `gen_settings.py` or `db/conf.txt` by specifying the highest item id+1 as the minimum range.
 
