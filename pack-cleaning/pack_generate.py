@@ -32,6 +32,8 @@ def process_dirs(folder=root_dir, pack_prefix=""):
 			pack_name = pack_prefix+"maps"
 		elif any([pack_name.startswith(i) for i in ("season1", "season2")]):
 			pack_name = pack_prefix+"season"
+		elif any([pack_name.startswith(i) for i in ("npc_pet", "npc_mount")]):
+			pack_name = pack_prefix+"npc"
 		elif any([pack_name.startswith(i) for i in ("yw_bin", "yw_effect", "yw_environment", "yw_guild", "yw_item", "yw_special", "yw_terrainmaps", "yw_tree", "yw_ui")]):
 			pack_name = pack_prefix+"yw_etc"
 		outp_path = os.path.join(outp_dir, pack_name, virt_path)
