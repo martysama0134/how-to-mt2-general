@@ -1,0 +1,16 @@
+
+"용혼석 추출에 성공하였습니다.";
+"Succeeded to extracting DSS."
+
+"용혼석 추출에 실패하여 %s를 얻었습니다.";
+"Failed to extracting DSS and got %s."
+
+"용혼석 추출에 실패하였습니다.";
+"Failed to extracting DSS."
+
+"제조에 실패하였습니다.";
+"Failed to craft."
+
+"아이템이 나올 확률";
+"Item drop rate";
+
