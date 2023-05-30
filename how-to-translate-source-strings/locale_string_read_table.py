@@ -8,7 +8,7 @@ def LoadTable(filename = "locale_string.txt"):
     stringOriginal = ""
     errorsInLines = False
     # Open and read the file
-    with open('locale_string.txt', 'rb') as f1:
+    with open(filename, 'rb') as f1:
         for line in f1.readlines():
             line = line.strip()
             #skip empty
