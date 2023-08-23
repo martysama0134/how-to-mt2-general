@@ -1,3 +1,4 @@
+// martysama0134 - 2014
 #ifdef ENABLE_PYLIB_CHECK
 #define PRINT_LEVEL 0
 #define PRINTME(level, ...) if(PRINT_LEVEL>=level) TraceError(__VA_ARGS__);
