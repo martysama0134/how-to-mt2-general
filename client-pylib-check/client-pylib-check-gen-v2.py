@@ -13,9 +13,6 @@ def calculate_crc32(file_path):
         return crc32_hash
 
 if __name__ == "__main__":
-    # Set the current working directory to a specific path
-    # os.chdir(WORKING_DIR)
-
     # Initialize an empty list to store file information
     file_info = []
 

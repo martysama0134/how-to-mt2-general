@@ -2,8 +2,8 @@ import os
 import zlib
 
 WORKING_DIR = r"C:\M2Clients\M2Client-v22"
-PYLIB_FOLDER = ["./lib"]#, "./miles"]
-OUTPUT_FILENAME = "UserInterface-PyLibFilesTable.cpp"
+PYLIB_FOLDER = ["lib"]#, "./miles"]
+OUTPUT_FILENAME = "UserInterface-PyLibFilesTable-v3.cpp"
 
 # Function to calculate CRC32 checksum
 def calculate_crc32(file_path):
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     # Create and write the C++ style table to a file
     with open(OUTPUT_FILENAME, "w") as output_file:
-        output_file.write("PyLibFiles_t PyLibFilesTable[] = {\n")
+        output_file.write("std::vector<PyLibFiles_t> PyLibFilesTable = {\n")
         for file_name, file_size, crc32 in file_info:
             file_name = file_name.replace("\\", "/")
             output_file.write(f'    {{ "{file_name}", {file_size}, {crc32} }},\n')
