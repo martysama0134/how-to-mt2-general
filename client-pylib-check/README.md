@@ -11,3 +11,9 @@ The `ENABLE_PYLIB_CHECK-refactory-v3.cpp` contains a full refactory in c++20.
 	```
 
 2. Replace the old code inside `Client\UserInterface\UserInterface.cpp` with the one inside `ENABLE_PYLIB_CHECK-refactory-v3.cpp`.
+
+### How to Load via Json
+
+1. Set this constant as true: `constexpr bool PyLibTableLoadFromJson = true;`
+2. Add the generated `pylibfilestable.json` in root eix/epk
+
