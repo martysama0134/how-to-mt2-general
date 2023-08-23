@@ -10,6 +10,9 @@
 constexpr bool PyLibCheckForce = false; // Throw an error if the file is missing
 constexpr int PrintLevel = 0;
 
+constexpr bool PyLibTableLoadFromJson = false;
+constexpr auto PyLibTableJsonName = "pylibfilestable.json";
+
 template <class... Args>
 void PrintMe(int level, const Args&... Arguments)
 {
@@ -65,6 +68,42 @@ std::vector<PyLibFiles_t> PyLibFilesTable = {
 	{ "lib/__future__.pyc", 4431, 2857792867 },
 };
 
+std::vector<PyLibFiles_t> LoadPyLibFilesTableFromJson(const std::string_view& jsonStr)
+{
+	std::vector<PyLibFiles_t> pyLibFilesTable;
+
+	rapidjson::Document document;
+	document.Parse(jsonStr.data());
+
+	if (document.HasParseError()) {
+		// Handle JSON parsing error
+		rapidjson::ParseErrorCode errorCode = document.GetParseError();
+		size_t errorOffset = document.GetErrorOffset();
+		PrintMe(0, "JSON parsing error at offset %zu, error code: %d", errorOffset, errorCode);
+		return pyLibFilesTable;
+	}
+
+	if (!document.IsArray()) {
+		// Handle error: JSON string doesn't contain an array
+		return pyLibFilesTable;
+	}
+
+	for (const auto& item : document.GetArray()) {
+		if (item.IsObject() && item.HasMember("fileName") && item.HasMember("stSize") && item.HasMember("dwCRC32")) {
+			PyLibFiles_t fileInfo;
+			fileInfo.fileName = item["fileName"].GetString();
+			fileInfo.stSize = item["stSize"].GetUint64();
+			fileInfo.dwCRC32 = item["dwCRC32"].GetUint();
+			pyLibFilesTable.emplace_back(fileInfo);
+		}
+		else {
+			// Handle error: JSON object doesn't have the expected members
+		}
+	}
+
+	return pyLibFilesTable;
+}
+
 bool checkPyLibDir()
 {
 	bool HasHack = false;
@@ -76,14 +115,15 @@ bool checkPyLibDir()
 		{
 			if constexpr (PyLibCheckForce)
 			{
-				PrintMe(0, "File not found: {}", fileInfo.fileName.c_str());
+				PrintMe(0, "File not found: %s", fileInfo.fileName.c_str());
 				HasHack = true;
 				break;
 			}
-			PrintMe(1, "File not found: {}", fileInfo.fileName.c_str());
+			PrintMe(1, "File not found: %s", fileInfo.fileName.c_str());
 			continue;
 		}
 
+		PrintMe(1, "processing file: %s", fileInfo.fileName.c_str());
 		const auto dwFileSize = GetFileSize(fileInfo.fileName.c_str());
 		const auto dwCrc32 = GetFileCRC32(fileInfo.fileName.c_str());
 
@@ -114,6 +154,19 @@ bool checkPyLibDir()
 bool __CheckPyLibFiles()
 {
 	PrintMe(1, "__CheckPyLibFiles processing");
+	if constexpr (PyLibTableLoadFromJson)
+	{
+		LPCVOID pvData{};
+		CMappedFile file{};
+		if (!CEterPackManager::Instance().Get(file, PyLibTableJsonName, &pvData))
+		{
+			PrintMe(0, "pylib json load failed %s", PyLibTableJsonName);
+			return false;
+		}
+		std::string_view jsonData(static_cast<const char*>(pvData), file.Size());
+		PyLibFilesTable = std::move(LoadPyLibFilesTableFromJson(jsonData));
+	}
+
 	if (checkPyLibDir())
 		return false;
 	return true;
