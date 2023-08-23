@@ -1,4 +1,4 @@
-
+### How to Install it
 Before `app->Initialize(hInstance);` add:
 
 ```cpp
@@ -8,4 +8,4 @@ Before `app->Initialize(hInstance);` add:
 #endif
 ```
 
-The `ENABLE_PYLIB_CHECK-refactory-v3.cpp` contains a full refactory in c++20.
+The `ENABLE_PYLIB_CHECK-refactory-v3.cpp` contains a full refactory in c++20. Replace the old code inside `Client\UserInterface\UserInterface.cpp`.
