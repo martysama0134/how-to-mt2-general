@@ -1,13 +1,13 @@
 #ifdef ENABLE_PYLIB_CHECK
+#include <algorithm>
+#include <filesystem>
 #include <iostream>
 #include <string>
-#include <algorithm>
 #include <vector>
 #include <fmt/format.h> // Assuming you have fmt library installed
 
 constexpr bool PyLibCheckForce = false; // Throw an error if the file is missing
 constexpr int PrintLevel = 0;
-constexpr auto PyLibFolder = "lib";
 
 template <class... Args>
 void PrintMe(int level, const Args&... Arguments)
@@ -64,43 +64,39 @@ std::vector<PyLibFiles_t> PyLibFilesTable = {
 	{ "lib/__future__.pyc", 4431, 2857792867 },
 };
 
-bool checkPyLibDir(const std::string_view& szDirName)
+bool checkPyLibDir()
 {
 	bool HasHack = false;
 
 	for (const auto& fileInfo : PyLibFilesTable)
 	{
-		const std::string& sPathName = fileInfo.fileName;
-		const size_t stSize = fileInfo.stSize;
-		const DWORD dwCRC32 = fileInfo.dwCRC32;
-
 		// Check if the file exists
-		DWORD dwFileSize = GetFileSize(sPathName.c_str());
-		if (!dwFileSize)
+		if (!std::filesystem::exists(fileInfo.fileName))
 		{
-			PrintMe(0, "File not found: {}", sPathName.c_str());
 			if constexpr (PyLibCheckForce)
 			{
+				PrintMe(0, "File not found: {}", fileInfo.fileName.c_str());
 				HasHack = true;
 				break;
 			}
-			else
-				continue;
+			PrintMe(1, "File not found: {}", fileInfo.fileName.c_str());
+			continue;
 		}
 
-		DWORD dwCrc32 = GetFileCRC32(sPathName.c_str());
+		const auto dwFileSize = GetFileSize(fileInfo.fileName.c_str());
+		const auto dwCrc32 = GetFileCRC32(fileInfo.fileName.c_str());
 
 		if (fileInfo.stSize != dwFileSize)
 		{
 			PrintMe(1, "wrong size %zu==%u", fileInfo.stSize, dwFileSize);
-			PrintMe(0, "wrong size %zu for %s", dwFileSize, sPathName.c_str());
+			PrintMe(0, "wrong size %zu for %s", dwFileSize, fileInfo.fileName.c_str());
 			HasHack = true;
 			break;
 		}
 		else if (fileInfo.dwCRC32 != dwCrc32)
 		{
 			PrintMe(1, "wrong crc32 %u==%u", fileInfo.dwCRC32, dwCrc32);
-			PrintMe(0, "wrong crc32 %u for %s", dwCrc32, sPathName.c_str());
+			PrintMe(0, "wrong crc32 %u for %s", dwCrc32, fileInfo.fileName.c_str());
 			HasHack = true;
 			break;
 		}
@@ -116,8 +112,8 @@ bool checkPyLibDir(const std::string_view& szDirName)
 
 bool __CheckPyLibFiles()
 {
-	PrintMe(1, "__CheckPyLibFiles processing %s", PyLibFolder);
-	if (checkPyLibDir(PyLibFolder))
+	PrintMe(1, "__CheckPyLibFiles processing");
+	if (checkPyLibDir())
 		return false;
 	return true;
 }
