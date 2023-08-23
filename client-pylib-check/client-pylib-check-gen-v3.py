@@ -8,8 +8,6 @@ PYLIB_FOLDER = ["lib"]#, "./miles"]
 OUTPUT_FILENAME_CPP = "UserInterface-PyLibFilesTable-v3.cpp"
 OUTPUT_FILENAME_JSON = "pylibfilestable.json"
 
-WORKING_DIR = r"C:\Users\marty\Documents\M2Clients\S3llMetin2-v22.5.7.0"
-
 # Function to calculate CRC32 checksum
 def calculate_crc32(file_path):
     with open(file_path, 'rb') as file:
