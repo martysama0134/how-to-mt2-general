@@ -1,9 +1,10 @@
 import os
 
-log_file_path = "duplicated_files.log"
+log_file_path1 = "duplicated_files.log"
+log_file_path2 = "repeated_files.log"
 delete_log = False
-delete_file = True
-print_filename = False
+delete_file = False
+print_filename = True
 
 def format_bytes(nBytes):
     # Formats bytes with periods as thousands separators
@@ -44,4 +45,5 @@ def delete_files_from_log(log_file_path):
     print(f"Total deleted bytes: {format_bytes(total_deleted_bytes)}")
 
 if __name__ == "__main__":
-    delete_files_from_log(log_file_path)
+    delete_files_from_log(log_file_path1)
+    delete_files_from_log(log_file_path2)

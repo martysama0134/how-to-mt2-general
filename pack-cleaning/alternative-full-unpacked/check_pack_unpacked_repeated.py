@@ -1,6 +1,8 @@
 import os
 
 index_file_path = "../../bin/pack/Index"
+root_pack_path = "./"
+log_file_path = "repeated_files.log"  # Define the log file path
 
 def LoadIndex(filepath):
     # Read the content of the Index file
@@ -34,7 +36,10 @@ def see_all_files(folder_name, seen_files):
                 seen_files[rel_path] = {'size': file_size, 'folder': folder_name}
 
 if __name__ == "__main__":
+    # Delete the log file if it exists
+    if os.path.exists(log_file_path):
+        os.remove(log_file_path)
     pack_list = LoadIndex(index_file_path)
     seen_files = {}
     for folder_name in pack_list:
-        see_all_files(folder_name, seen_files)
+        see_all_files(os.path.join(root_pack_path, folder_name), seen_files)

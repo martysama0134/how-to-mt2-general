@@ -2,6 +2,7 @@ import os
 import zlib  # For CRC32 calculation
 
 index_file_path = "../../bin/pack/Index"
+root_pack_path = "./"
 log_file_path = "repeated_files.log"  # Define the log file path
 
 def calculate_crc32(file_path):
@@ -51,4 +52,4 @@ if __name__ == "__main__":
     pack_list = LoadIndex(index_file_path)
     seen_files = {}
     for folder_name in pack_list:
-        see_all_files(folder_name, seen_files)
+        see_all_files(os.path.join(root_pack_path, folder_name), seen_files)
