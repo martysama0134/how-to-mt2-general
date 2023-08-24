@@ -31,6 +31,15 @@ class EterGroupReader(object):
             self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
 
 
+    def GetGroups(self, skipRoot=False):
+        return EterGroupIterator(self, skipRoot=skipRoot)
+
+
+    def GetGroupsOf(self, fnc, skipRoot=False):
+        group_iterator = EterGroupIterator(self, skipRoot=skipRoot)
+        return filter(fnc, group_iterator)
+
+
     def LoadFromFile(self, filename):
         with open(filename, "r") as f:
             return self.LoadFromData(f.read())
@@ -264,10 +273,6 @@ class MobDropItemHelper(EterGroupReader):
     def AddNewItemToGroup():
         pass
 
-    def GetGroupsOf(self, fnc):
-        group_iterator = EterGroupIterator(self)
-        return filter(fnc, group_iterator)
-
     def GetGroupsOfMetins(self):
         return self.GetGroupsOf(lambda group: 'mob' in group.dataDict and 8000 <= group.dataDict['mob'].value[0] <= 8999)
         # def fnc(group):
@@ -280,9 +285,27 @@ class MobDropItemHelper(EterGroupReader):
 
 
 def GetGroupHighestIndex(group):
-    return max((int(key) for key in group.dataDict.keys() if key.isdigit()), default=None)
+    return max(GetGroupIndexKeys(group), default=None)
 
 
+def GetGroupIndexKeys(group):
+    return [int(key) for key in group.dataDict.keys() if key.isdigit()]
+
+
+def GetGroupIndexKeysFromDataList(group):
+    return [int(elem.key) for elem in group.dataList if elem.key.isdigit()]
+
+
+def CheckValidContinuousGroupIndex(group):
+    # Convert keys to integers and sort them
+    int_keys = sorted(map(int, GetGroupIndexKeysFromDataList(group)))
+
+    # Check for contiguous and unique keys
+    for i, key in enumerate(int_keys[:-1]):
+        if key + 1 != int_keys[i + 1]:
+            return False, key
+
+    return True, 0
 
 
 if __name__ == "__main__":
@@ -338,13 +361,24 @@ if __name__ == "__main__":
     #     for group in group_iterator:
     #         print(f"Group Name: {group.name}")
 
-    if True: # load mob_drop_item and print only the metins
-        egr = MobDropItemHelper()
-        egr.LoadFromFile('mob_drop_item.txt')
-        for group in egr.GetGroupsOfMetins():
-            egr.PrintTree(group)
-            print("HIGHEST", GetGroupHighestIndex(group))
-        egr.SaveToFile('mob_drop_item-out.txt')
+    # if True: # load mob_drop_item and print only the metins
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     for group in egr.GetGroupsOfMetins():
+    #         egr.PrintTree(group)
+    #         print("HIGHEST", GetGroupHighestIndex(group))
+    #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    # if True: # load mob_drop_item and check for errors
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     for group in egr.GetGroups(skipRoot=True):
+    #         valid, found = CheckValidContinuousGroupIndex(group)
+    #         if not valid:
+    #             egr.PrintTree(group)
+    #             print(f"NOT VALID: Error at group '{group.name}' index {found}")
+    #             break
+    #     egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and manipulate it
     #     egr = MobDropItemHelper()
