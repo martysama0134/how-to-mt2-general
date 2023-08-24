@@ -258,18 +258,19 @@ if __name__ == "__main__":
     #         node.value = [11, 22, 33, 44, 55, 66]
     #     egr.SaveToFile('sample-out.txt')
 
-    # egr = EterGroupReader()
-    # egr.LoadFromFile('event.txt')
-    # egr.SaveToFile('event-out.txt')
+    # if True: # load alternative groups
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('event.txt')
+    #     egr.SaveToFile('event-out.txt')
 
-    # egr = EterGroupReader()
-    # egr.LoadFromFile('dragon_soul_table.txt')
-    # egr.SaveToFile('dragon_soul_table-out.txt')
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('dragon_soul_table.txt')
+    #     egr.SaveToFile('dragon_soul_table-out.txt')
 
-    # egr = EterGroupReader()
-    # egr.LoadFromFile('dst_commented.txt')
-    # egr.SaveToFile('dst_commented-out.txt')
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('dst_commented.txt')
+    #     egr.SaveToFile('dst_commented-out.txt')
 
-    # egr = EterGroupReader()
-    # egr.LoadFromFile('mob_drop_item.txt')
-    # egr.SaveToFile('mob_drop_item-out.txt')
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     egr.SaveToFile('mob_drop_item-out.txt')
