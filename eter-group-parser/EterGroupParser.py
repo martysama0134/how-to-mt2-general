@@ -5,17 +5,27 @@
 
 import re
 
+def GetIndent(n = 1, delimiter = '\t', padding = 1):
+    return n * (delimiter * padding)
+
+def GetSpaceIndent(n):
+    return GetIndent(n, delimiter=' ', padding=4)
+
+
 
 class EterGroupReader(object):
     def __init__(self):
         self.stackIndex = 0
         self.groupStack = {}
         self.groupRoot = EterGroupNode("root")
-        self.currentNode = [self.groupRoot]
+        self.currentGroupNode = [self.groupRoot]
+        self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
+
 
     def LoadFromFile(self, filename):
         with open(filename, "r") as f:
             return self.LoadFromData(f.read())
+
 
     def LoadFromData(self, data):
         lines = data.split("\n")
@@ -26,6 +36,7 @@ class EterGroupReader(object):
                 continue
 
             elif line.startswith('#'):
+                self.lastNode.AddComment(line)
                 continue
 
             elif line.lower().startswith('group'):
@@ -38,10 +49,11 @@ class EterGroupReader(object):
                 group = EterGroupNode()
                 group.SetName(groupName)
                 group.SetIndex(self.stackIndex)
-                group.SetParent(self.currentNode[-1])
-                self.currentNode[-1].SetData(groupName, group)
+                group.SetParent(self.currentGroupNode[-1])
+                self.currentGroupNode[-1].SetData(groupName, group)
 
-                self.currentNode.append(group)
+                self.currentGroupNode.append(group)
+                self.lastNode = group
 
             elif line.startswith('{'):
                 pass #stack incremental moved to group init
@@ -49,21 +61,25 @@ class EterGroupReader(object):
             elif line.startswith('}'):
                 self.groupStack[self.stackIndex] = False
                 self.stackIndex -= 1
-                self.currentNode.pop()
+                self.currentGroupNode.pop()
+                self.lastNode = self.currentGroupNode[-1]
 
             else:
                 key, value = self.GetValueFromLine(line)
                 elem = EterElemNode()
                 elem.SetName(key)
                 elem.SetIndex(self.stackIndex)
-                elem.SetParent(self.currentNode[-1])
+                elem.SetParent(self.currentGroupNode[-1])
                 elem.SetData(key, value)
-                self.currentNode[-1].SetData(key, elem)
+                self.currentGroupNode[-1].SetData(key, elem)
+                self.lastNode = elem
                 # print(key, value)
+
 
     def GetGroupNameFromLine(self, line):
         match = re.search(r'Group\s+(.+)', line, re.IGNORECASE)
         return match.group(1).strip() if match else 'NONAME'
+
 
     def GetValueFromLine(self, line):
         # Split the line into words while preserving double-quoted strings
@@ -85,32 +101,35 @@ class EterGroupReader(object):
 
         return None, None
 
+
     def PrintTree(self, group = None, level = 0):
         if not group:
             group = self.groupRoot
             level = level - 1
         else:
-            indent = ' '*4*level
-            print('{}Group {}:'.format(indent, group.name))
+            print('{}Group {}:'.format(GetSpaceIndent(level), group.name))
 
         for key, elem in group.data.items():
             if isinstance(elem, EterGroupNode):
                 self.PrintTree(elem, level + 1)
                 print("")
             else:
-                indent = ' '*4*(level + 1)
-                print('{}{}: {}'.format(indent, elem.key, elem.value))
+                print('{}{}: {}'.format(GetSpaceIndent(level + 1), elem.key, elem.value))
+
 
     def GenerateTree(self):
         generatedLines = []
+
         def ProcessTree(group = None, level = 0):
             if not group:
                 group = self.groupRoot
                 level = level - 1
             else:
-                indent = '\t'*1*level
-                generatedLines.append('{}Group\t{}'.format(indent, group.name))
-                generatedLines.append('{}{{'.format(indent))
+                generatedLines.append('{}Group\t{}'.format(GetIndent(level), group.name))
+                generatedLines.append('{}{{'.format(GetIndent(level)))
+
+            for comment in group.comments:
+                generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
             for key, elem in group.data.items():
                 if isinstance(elem, EterGroupNode):
@@ -119,18 +138,22 @@ class EterGroupReader(object):
                 else:
                     if isinstance(elem.value, list):
                         elem.value = "\t".join(str(elem2) for elem2 in elem.value)
-                    indent2 = '\t'*1*(level + 1)
-                    generatedLines.append('{}{}\t{}'.format(indent2, elem.key, elem.value))
+
+                    generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.key, elem.value))
+                    for comment in elem.comments:
+                        generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
             if isinstance(group, EterGroupNode) and level >= 0:
-                generatedLines.append('{}}}'.format(indent))
+                generatedLines.append('{}}}'.format(GetIndent(level)))
 
         ProcessTree()
         return "\n".join(generatedLines)
 
+
     def SaveToFile(self, filename):
         with open(filename, "w") as f:
             f.write(self.GenerateTree())
+
 
 
 class EterNode(object):
@@ -149,6 +172,10 @@ class EterNode(object):
     def SetParent(self, parent):
         self.parent = parent
 
+    def AddComment(self, comment):
+        self.comments.append(comment)
+
+
 
 class EterElemNode(EterNode):
     def __init__(self, name=''):
@@ -162,6 +189,7 @@ class EterElemNode(EterNode):
         self.value = value
 
 
+
 class EterGroupNode(EterNode):
     def __init__(self, name=''):
         super().__init__(name)
@@ -170,6 +198,7 @@ class EterGroupNode(EterNode):
 
     def SetData(self, key, value):
         self.data[key] = value
+
 
 
 if __name__ == "__main__":

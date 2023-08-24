@@ -1,10 +1,15 @@
+# THIS IS A TOP SAMPLE COMMENT
 ScriptType            RaceDataScript
 
 BaseModelFileName     "d:/ymir work/pc/warrior/warrior_novice.GR2"
 
+# THIS IS A SECOND TOP SAMPLE COMMENT
+
 Group CorDraconis(Mystical)
 {
+	#--# HEADERS
 	Vnum	51506
+	#--# VNUMS
 	1	115000	1	1
 	2	125000	1	1
 	3	135000	1	1
