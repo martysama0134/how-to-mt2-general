@@ -400,10 +400,11 @@ def RepairContinuousGroupIndex(group):
 
 if __name__ == "__main__":
     pass
-    # egr = EterGroupReader()
-    # egr.LoadFromFile('sample.txt')
-    # egr.PrintTree()
-    # egr.SaveToFile('sample-out.txt')
+    # if True: # load, print, and save
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('sample.txt')
+    #     egr.PrintTree()
+    #     egr.SaveToFile('sample-out.txt')
 
     # if True: # find node and print it
     #     egr = EterGroupReader()
@@ -411,9 +412,6 @@ if __name__ == "__main__":
     #     node = egr.FindNode("ApplyNumSettings", "Default", "basis")
     #     if node:
     #         print("node {} found with value {}".format(node.key, node.value))
-    #     # egr.PrintTree(egr.groupRoot.dataDict["BodyChest"])
-    #     # print(egr.groupRoot.dataDict["BodyChest"].dataDict["Vnum"].value)
-    #     # egr.groupRoot.dataDict["BodyChest"].dataList
 
     # if True: # find node and edit it
     #     egr = EterGroupReader()
