@@ -15,6 +15,10 @@ def GetIndent(n = 1, delimiter = '\t', padding = 1):
 def GetSpaceIndent(n):
     return GetIndent(n, delimiter=' ', padding=4)
 
+def GetGroupsOf(egr, fnc):
+    group_iterator = EterGroupIterator(egr)
+    return filter(fnc, group_iterator)
+
 
 
 class EterGroupReader(object):
@@ -260,6 +264,25 @@ class MobDropItemHelper(EterGroupReader):
     def AddNewItemToGroup():
         pass
 
+    def GetGroupsOf(self, fnc):
+        group_iterator = EterGroupIterator(self)
+        return filter(fnc, group_iterator)
+
+    def GetGroupsOfMetins(self):
+        return self.GetGroupsOf(lambda group: 'mob' in group.dataDict and 8000 <= group.dataDict['mob'].value[0] <= 8999)
+        # def fnc(group):
+        #     if 'mob' in group.dataDict:
+        #         mob_value = group.dataDict['mob'].value[0]
+        #         return 8000 <= mob_value <= 8999
+        #     return False
+        # return self.GetGroupsOf(fnc)
+
+
+
+def GetGroupHighestIndex(group):
+    return max((int(key) for key in group.dataDict.keys() if key.isdigit()), default=None)
+
+
 
 
 if __name__ == "__main__":
@@ -304,21 +327,30 @@ if __name__ == "__main__":
     #     egr.LoadFromFile('mob_drop_item.txt')
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: # iter all groups and sub groups
-        egr = EterGroupReader()
-        egr.LoadFromFile('sample.txt')
+    # if True: # iter all groups and sub groups
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('sample.txt')
 
-        # Create an instance of the iterator
-        group_iterator = EterGroupIterator(egr, skipRoot=True)
+    #     # Create an instance of the iterator
+    #     group_iterator = EterGroupIterator(egr, skipRoot=True)
 
-        # Iterate over all groups using a lambda or function
-        for group in group_iterator:
-            print(f"Group Name: {group.name}")
+    #     # Iterate over all groups using a lambda or function
+    #     for group in group_iterator:
+    #         print(f"Group Name: {group.name}")
+
+    if True: # load mob_drop_item and print only the metins
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOfMetins():
+            egr.PrintTree(group)
+            print("HIGHEST", GetGroupHighestIndex(group))
+        egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and manipulate it
     #     egr = MobDropItemHelper()
     #     egr.LoadFromFile('mob_drop_item.txt')
-    #     # egr
+    #     for group in egr.GetGroupsOfMetins():
+    #         egr.PrintTree(group)
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
 
