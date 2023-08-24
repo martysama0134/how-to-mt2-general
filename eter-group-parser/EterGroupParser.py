@@ -7,6 +7,7 @@ import re
 
 ENABLE_NEXT_GROUP_PADDING = False
 ENABLE_COMMENTS_PRESERVATION = True
+ENABLE_AUTO_INCREMENT_FIX = True
 
 
 def GetIndent(n = 1, delimiter = '\t', padding = 1):
@@ -315,14 +316,14 @@ def IsTypeKillGroup(group):
 
 
 def IsMetinGroup(group):
-    return IsVnumRangeGroup(group, 8000, 8999)
+    return IsVnumInRangeGroup(group, 8000, 8999)
 
 
-def IsVnumListGroup(group, vnum_list):
+def IsVnumInListGroup(group, vnum_list):
     return 'mob' in group.dataDict and group.dataDict['mob'].value[0] in vnum_list
 
 
-def IsVnumRangeGroup(group, min_vnum, max_vnum):
+def IsVnumInRangeGroup(group, min_vnum, max_vnum):
     return 'mob' in group.dataDict and min_vnum <= group.dataDict['mob'].value[0] <= max_vnum
 
 
@@ -335,10 +336,10 @@ def GetGroupIndexKeys(group):
 
 
 def GetGroupIndexKeysFromDataList(group):
-    return [int(elem.key) for elem in group.dataList if elem.key.isdigit()]
+    return [int(elem.key) for elem in group.dataList if isinstance(elem, EterElemNode) and elem.key.isdigit()]
 
 
-def CheckValidContinuousGroupIndex(group):
+def CheckValidContinuousGroupIndex(group, repair=False):
     # Convert keys to integers and sort them
     int_keys = sorted(map(int, GetGroupIndexKeysFromDataList(group)))
 
@@ -348,6 +349,27 @@ def CheckValidContinuousGroupIndex(group):
             return False, key
 
     return True, 0
+
+
+def RepairContinuousGroupIndex(group):
+    # Convert keys to integers and sort them
+    int_keys = sorted(map(int, GetGroupIndexKeysFromDataList(group)))
+    if not int_keys:
+        print(f"group {group.name} has no index list")
+        return
+
+    updated_list = []
+    # Check for contiguous and unique keys
+    for i, key in enumerate(int_keys):
+        if i + 1 != key:
+            updated_list.append((str(key), str(i + 1)))
+
+    for old_key, new_key in updated_list:
+        print(old_key, "->", new_key)
+        group.dataDict[old_key].key = new_key
+        group.dataDict[new_key] = group.dataDict[old_key]
+        del group.dataDict[old_key]
+
 
 
 if __name__ == "__main__":
@@ -411,25 +433,46 @@ if __name__ == "__main__":
     #         print("HIGHEST", GetGroupHighestIndex(group))
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: # load mob_drop_item and add a red potion in the metin drops
-        egr = MobDropItemHelper()
-        egr.LoadFromFile('mob_drop_item.txt')
-        for group in egr.GetGroupsOfMetinsAndDrop():
-            egr.AddIndexElement(group, [27001, 1, 6.6])
-            egr.PrintTree(group)
-            # print("HIGHEST", GetGroupHighestIndex(group))
-        egr.SaveToFile('mob_drop_item-out.txt')
+    # if True: # load mob_drop_item and add a red potion in the metin drops
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     for group in egr.GetGroupsOfMetinsAndDrop():
+    #         egr.AddIndexElement(group, [27001, 1, 6.6])
+    #         egr.PrintTree(group)
+    #         # print("HIGHEST", GetGroupHighestIndex(group))
+    #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    # if True: # load mob_drop_item and add a red potion in vnum list
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     for group in egr.GetGroupsOf(lambda group: IsVnumInListGroup(group, [101, 105, 1059])):
+    #         egr.AddIndexElement(group, [27001, 1, 6.6])
+    #         egr.PrintTree(group)
+    #     egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and check for errors
     #     egr = MobDropItemHelper()
     #     egr.LoadFromFile('mob_drop_item.txt')
-    #     for group in egr.GetGroups(skipRoot=True):
+    #     for group in egr.GetGroups():
     #         valid, found = CheckValidContinuousGroupIndex(group)
     #         if not valid:
     #             egr.PrintTree(group)
     #             print(f"NOT VALID: Error at group '{group.name}' index {found}")
     #             break
     #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and repair for index errors
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroups():
+            # egr.PrintTree(group)
+            RepairContinuousGroupIndex(group)
+            # valid, found = CheckValidContinuousGroupIndex(group, repair=True)
+            # if not valid:
+            #     egr.PrintTree(group)
+            #     print(f"NOT VALID: Error at group '{group.name}' index {found}")
+            #     break
+        egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and manipulate it
     #     egr = MobDropItemHelper()
