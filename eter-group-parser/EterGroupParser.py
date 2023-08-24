@@ -338,6 +338,9 @@ def GetGroupIndexKeys(group):
 def GetGroupIndexKeysFromDataList(group):
     return [int(elem.key) for elem in group.dataList if isinstance(elem, EterElemNode) and elem.key.isdigit()]
 
+def GetGroupIndexNodeFromDataList(group):
+    return [elem for elem in group.dataList if isinstance(elem, EterElemNode) and elem.key.isdigit()]
+
 
 def CheckValidContinuousGroupIndex(group, repair=False):
     # Convert keys to integers and sort them
@@ -358,17 +361,20 @@ def RepairContinuousGroupIndex(group):
         print(f"group {group.name} has no index list")
         return
 
-    updated_list = []
+    needs_repair = False
     # Check for contiguous and unique keys
     for i, key in enumerate(int_keys):
         if i + 1 != key:
-            updated_list.append((str(key), str(i + 1)))
+            needs_repair = True
 
-    for old_key, new_key in updated_list:
-        print(old_key, "->", new_key)
-        group.dataDict[old_key].key = new_key
-        group.dataDict[new_key] = group.dataDict[old_key]
-        del group.dataDict[old_key]
+    if needs_repair:
+        group.dataDict = {}
+        for i, node in enumerate(GetGroupIndexNodeFromDataList(group)):
+            old_key = node.key
+            new_key = str(i + 1)
+            group.dataDict[new_key] = node
+            node.key = new_key
+            print(old_key, "->", new_key)
 
 
 
