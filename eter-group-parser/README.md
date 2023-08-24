@@ -162,11 +162,4 @@ Examples:
             RepairContinuousGroupIndex(group)
         egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: # load mob_drop_item and manipulate it
-        egr = MobDropItemHelper()
-        egr.LoadFromFile('mob_drop_item.txt')
-        for group in egr.GetGroupsOfMetins():
-            egr.PrintTree(group)
-        egr.SaveToFile('mob_drop_item-out.txt')
-
 ```
