@@ -233,6 +233,35 @@ class EterGroupNode(EterNode):
 
 
 
+class EterGroupIterator:
+    def __init__(self, egr, skipRoot = False):
+        self.egr = egr
+        if skipRoot:
+            self.stack = list(egr.groupRoot.dataList)  # Initialize with children of root
+        else:
+            self.stack = [egr.groupRoot]
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        while self.stack:
+            group = self.stack.pop()
+            if isinstance(group, EterGroupNode):
+                for elem in group.dataList:
+                    if isinstance(elem, EterGroupNode):
+                        self.stack.append(elem)
+                return group
+        raise StopIteration
+
+
+
+class MobDropItemHelper(EterGroupReader):
+    def AddNewItemToGroup():
+        pass
+
+
+
 if __name__ == "__main__":
     pass
     # egr = EterGroupReader()
@@ -274,3 +303,22 @@ if __name__ == "__main__":
     #     egr = EterGroupReader()
     #     egr.LoadFromFile('mob_drop_item.txt')
     #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # iter all groups and sub groups
+        egr = EterGroupReader()
+        egr.LoadFromFile('sample.txt')
+
+        # Create an instance of the iterator
+        group_iterator = EterGroupIterator(egr, skipRoot=True)
+
+        # Iterate over all groups using a lambda or function
+        for group in group_iterator:
+            print(f"Group Name: {group.name}")
+
+    # if True: # load mob_drop_item and manipulate it
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     # egr
+    #     egr.SaveToFile('mob_drop_item-out.txt')
+
+
