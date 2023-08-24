@@ -274,25 +274,48 @@ class MobDropItemHelper(EterGroupReader):
         pass
 
     def GetGroupsOfMetins(self):
-        return self.GetGroupsOf(lambda group: 'mob' in group.dataDict and 8000 <= group.dataDict['mob'].value[0] <= 8999)
-        # def fnc(group):
-        #     if 'mob' in group.dataDict:
-        #         mob_value = group.dataDict['mob'].value[0]
-        #         return 8000 <= mob_value <= 8999
-        #     return False
-        # return self.GetGroupsOf(fnc)
+        return GetGroupsOfMetins(self)
 
     def GetGroupsOfMetinsAndDrop(self):
-        return self.GetGroupsOf(lambda group: 'mob' in group.dataDict and 'type' in group.dataDict and group.dataDict['type'].value[0] == 'drop' and 8000 <= group.dataDict['mob'].value[0] <= 8999)
+        return GetGroupsOfMetinsAndDrop(self)
 
     def AddIndexElement(self, group, data):
-        highest = str(GetGroupHighestIndex(group) + 1)
-        elem = EterElemNode()
-        elem.SetName(highest)
-        elem.SetIndex(group.index)
-        elem.SetParent(group)
-        elem.SetData(highest, data)
-        group.SetData(highest, elem)
+        AddIndexElement(group, data)
+
+
+
+def AddIndexElement(group, data):
+    highest = str(GetGroupHighestIndex(group) + 1)
+    elem = EterElemNode()
+    elem.SetName(highest)
+    elem.SetIndex(group.index)
+    elem.SetParent(group)
+    elem.SetData(highest, data)
+    group.SetData(highest, elem)
+
+
+def GetGroupsOfMetinsAndDrop(egr):
+    return egr.GetGroupsOf(lambda group: IsTypeDropGroup(group) and IsMetinGroup(group))
+
+
+def GetGroupsOfMetins(egr):
+    return egr.GetGroupsOf(lambda group: IsMetinGroup(group))
+
+
+def IsTypeGroup(group, type_to_check):
+    return 'type' in group.dataDict and group.dataDict['type'].value[0] == type_to_check
+
+
+def IsTypeDropGroup(group):
+    return IsTypeGroup(group, 'drop')
+
+
+def IsTypeKillGroup(group):
+    return IsTypeGroup(group, 'kill')
+
+
+def IsMetinGroup(group):
+    return 'mob' in group.dataDict and 8000 <= group.dataDict['mob'].value[0] <= 8999
 
 
 def GetGroupHighestIndex(group):
@@ -300,7 +323,6 @@ def GetGroupHighestIndex(group):
 
 
 def GetGroupIndexKeys(group):
-    print(group.dataDict.keys())
     return [int(key) for key in group.dataDict.keys() if key.isdigit()]
 
 
