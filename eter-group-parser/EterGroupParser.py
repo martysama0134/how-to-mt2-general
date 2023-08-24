@@ -39,7 +39,7 @@ class EterGroupReader(object):
                 group.SetName(groupName)
                 group.SetIndex(self.stackIndex)
                 group.SetParent(self.currentNode[-1])
-                self.currentNode[-1].data[groupName] = group
+                self.currentNode[-1].SetData(groupName, group)
 
                 self.currentNode.append(group)
 
@@ -53,8 +53,13 @@ class EterGroupReader(object):
 
             else:
                 key, value = self.GetValueFromLine(line)
-                self.currentNode[-1].data[key] = value
-                # print(value)
+                elem = EterElemNode()
+                elem.SetName(key)
+                elem.SetIndex(self.stackIndex)
+                elem.SetParent(self.currentNode[-1])
+                elem.SetData(key, value)
+                self.currentNode[-1].SetData(key, elem)
+                # print(key, value)
 
     def GetGroupNameFromLine(self, line):
         match = re.search(r'Group\s+(.+)', line, re.IGNORECASE)
@@ -94,7 +99,7 @@ class EterGroupReader(object):
                 print("")
             else:
                 indent = ' '*4*(level + 1)
-                print('{}{}: {}'.format(indent, key, elem))
+                print('{}{}: {}'.format(indent, elem.key, elem.value))
 
     def GenerateTree(self):
         generatedLines = []
@@ -112,10 +117,10 @@ class EterGroupReader(object):
                     ProcessTree(elem, level + 1)
                     generatedLines.append("")
                 else:
-                    if isinstance(elem, list):
-                        elem = "\t".join(str(elem2) for elem2 in elem)
+                    if isinstance(elem.value, list):
+                        elem.value = "\t".join(str(elem2) for elem2 in elem.value)
                     indent2 = '\t'*1*(level + 1)
-                    generatedLines.append('{}{}\t{}'.format(indent2, key, elem))
+                    generatedLines.append('{}{}\t{}'.format(indent2, elem.key, elem.value))
 
             if isinstance(group, EterGroupNode) and level >= 0:
                 generatedLines.append('{}}}'.format(indent))
@@ -128,12 +133,12 @@ class EterGroupReader(object):
             f.write(self.GenerateTree())
 
 
-class EterGroupNode(object):
-    def __init__(self, name = ''):
-        self.data = {}
-        self.name = name if name else "NONAME_{}".format(id(self))
+class EterNode(object):
+    def __init__(self, name=''):
+        self.name = name or "NONAME_{}".format(id(self))
         self.index = 0
         self.parent = None
+        self.comments = []
 
     def SetName(self, name):
         self.name = name
@@ -143,6 +148,28 @@ class EterGroupNode(object):
 
     def SetParent(self, parent):
         self.parent = parent
+
+
+class EterElemNode(EterNode):
+    def __init__(self, name=''):
+        super().__init__(name)
+
+        self.key = ''
+        self.value = ''
+
+    def SetData(self, key, value):
+        self.key = key
+        self.value = value
+
+
+class EterGroupNode(EterNode):
+    def __init__(self, name=''):
+        super().__init__(name)
+
+        self.data = {}
+
+    def SetData(self, key, value):
+        self.data[key] = value
 
 
 if __name__ == "__main__":
