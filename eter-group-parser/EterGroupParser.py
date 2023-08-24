@@ -165,6 +165,24 @@ class EterGroupReader(object):
             f.write(self.GenerateTree())
 
 
+    def FindNode(self, *args):
+        """
+        Find a node in the hierarchy by specifying a variable number of arguments representing the path.
+
+        :param args: Variable arguments representing the path to the node.
+        :return: The found node or None if not found.
+        """
+        node = self.groupRoot  # Start from the root
+
+        for key in args:
+            if key in node.dataDict:
+                node = node.dataDict[key]
+            else:
+                return None  # Key not found, return None
+
+        return node
+
+
 
 class EterNode(object):
     def __init__(self, name=''):
@@ -216,10 +234,29 @@ class EterGroupNode(EterNode):
 
 
 if __name__ == "__main__":
-    egr = EterGroupReader()
-    egr.LoadFromFile('sample.txt')
-    egr.PrintTree()
-    egr.SaveToFile('sample-out.txt')
+    pass
+    # egr = EterGroupReader()
+    # egr.LoadFromFile('sample.txt')
+    # egr.PrintTree()
+    # egr.SaveToFile('sample-out.txt')
+
+    # if True: # find node and print it
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('sample.txt')
+    #     node = egr.FindNode("ApplyNumSettings", "Default", "basis")
+    #     if node:
+    #         print("node {} found with value {}".format(node.key, node.value))
+    #     # egr.PrintTree(egr.groupRoot.dataDict["BodyChest"])
+    #     # print(egr.groupRoot.dataDict["BodyChest"].dataDict["Vnum"].value)
+    #     # egr.groupRoot.dataDict["BodyChest"].dataList
+
+    # if True: # find node and edit it
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('sample.txt')
+    #     node = egr.FindNode("ApplyNumSettings", "Default", "basis")
+    #     if node:
+    #         node.value = [11, 22, 33, 44, 55, 66]
+    #     egr.SaveToFile('sample-out.txt')
 
     # egr = EterGroupReader()
     # egr.LoadFromFile('event.txt')
