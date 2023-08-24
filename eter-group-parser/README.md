@@ -1,9 +1,11 @@
 # eter-group-parser
 
-It loads Group files. Example of a loaded file:
+It loads and resave Eter Group files.
+
+Example of a loaded file:
 
 ```
-ScriptType: RaceDataScript
+ScriptType: ['RaceDataScript']
 BaseModelFileName: "d:/ymir work/pc/warrior/warrior_novice.GR2"
 Group CorDraconis(Mystical):
     Vnum: [51506]
@@ -31,7 +33,7 @@ Group MentalChest:
     5: [50420, 1, 1]
 
 Group Cung_Mok:
-    type: drop
+    type: ['drop']
     mob: [151]
     1: [71151, 1, 100]
     2: [71151, 1, 100]
@@ -50,9 +52,14 @@ Group ApplyNumSettings:
         add_max: [0, 1, 2, 2, 3, 3]
 
     Group NotSoDefault:
-        basis: [1, 1, 1, 2, 2, 3]
-        add_min: [0, 0, 0, 0, 0, 0]
-        add_max: [0, 1, 2, 2, 3, 3]
+        basis: [1, 2, 3, 4, 5]
+        add_min: [5, 4, 3, 2, 1]
+        add_max: [11, 3, 5, 7, 22]
+
+    Group MixedTypes:
+        1: ['MAX_SP', 500]
+        2: ['RESIST_WIND', 10]
+        3: ['ENCHANT_WIND', 10]
 
 
 Group HairData:
