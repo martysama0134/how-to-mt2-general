@@ -228,7 +228,7 @@ class EterElemNode(EterNode):
         self.value = ''
 
     def SetData(self, key, value):
-        self.key = key
+        self.key = str(key)
         self.value = value
 
 
@@ -241,7 +241,7 @@ class EterGroupNode(EterNode):
         self.dataList = []
 
     def SetData(self, key, value):
-        self.dataDict[key] = value
+        self.dataDict[str(key)] = value
         self.dataList.append(value)
 
 
@@ -282,6 +282,17 @@ class MobDropItemHelper(EterGroupReader):
         #     return False
         # return self.GetGroupsOf(fnc)
 
+    def GetGroupsOfMetinsAndDrop(self):
+        return self.GetGroupsOf(lambda group: 'mob' in group.dataDict and 'type' in group.dataDict and group.dataDict['type'].value[0] == 'drop' and 8000 <= group.dataDict['mob'].value[0] <= 8999)
+
+    def AddIndexElement(self, group, data):
+        highest = str(GetGroupHighestIndex(group) + 1)
+        elem = EterElemNode()
+        elem.SetName(highest)
+        elem.SetIndex(group.index)
+        elem.SetParent(group)
+        elem.SetData(highest, data)
+        group.SetData(highest, elem)
 
 
 def GetGroupHighestIndex(group):
@@ -289,6 +300,7 @@ def GetGroupHighestIndex(group):
 
 
 def GetGroupIndexKeys(group):
+    print(group.dataDict.keys())
     return [int(key) for key in group.dataDict.keys() if key.isdigit()]
 
 
@@ -368,6 +380,22 @@ if __name__ == "__main__":
     #         egr.PrintTree(group)
     #         print("HIGHEST", GetGroupHighestIndex(group))
     #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and add a red potion in the metin drops
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOfMetinsAndDrop():
+            # highest = GetGroupHighestIndex(group) + 1
+            # elem = EterElemNode()
+            # elem.SetName(highest)
+            # elem.SetIndex(group.index)
+            # elem.SetParent(group)
+            # elem.SetData(highest, [27001, 1, 6.6])
+            # group.SetData(highest, elem)
+            egr.AddIndexElement(group, [27001, 1, 6.6])
+            egr.PrintTree(group)
+            # print("HIGHEST", GetGroupHighestIndex(group))
+        egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and check for errors
     #     egr = MobDropItemHelper()
