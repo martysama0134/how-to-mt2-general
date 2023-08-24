@@ -96,6 +96,38 @@ class EterGroupReader(object):
                 indent = ' '*4*(level + 1)
                 print('{}{}: {}'.format(indent, key, elem))
 
+    def GenerateTree(self):
+        generatedLines = []
+        def ProcessTree(group = None, level = 0):
+            if not group:
+                group = self.groupRoot
+                level = level - 1
+            else:
+                indent = '\t'*1*level
+                generatedLines.append('{}Group\t{}'.format(indent, group.name))
+                generatedLines.append('{}{{'.format(indent))
+
+            for key, elem in group.data.items():
+                if isinstance(elem, EterGroupNode):
+                    ProcessTree(elem, level + 1)
+                    generatedLines.append("")
+                else:
+                    if isinstance(elem, list):
+                        elem = "\t".join(str(elem2) for elem2 in elem)
+                    indent2 = '\t'*1*(level + 1)
+                    generatedLines.append('{}{}\t{}'.format(indent2, key, elem))
+
+            if isinstance(group, EterGroupNode) and level >= 0:
+                generatedLines.append('{}}}'.format(indent))
+
+        ProcessTree()
+        return "\n".join(generatedLines)
+
+    def SaveToFile(self, filename):
+        with open(filename, "w") as f:
+            f.write(self.GenerateTree())
+        pass
+
 
 class EterGroupNode(object):
     def __init__(self, name = ''):
@@ -118,3 +150,4 @@ if __name__ == "__main__":
     egr = EterGroupReader()
     egr.LoadFromFile('sample.txt')
     egr.PrintTree()
+    egr.SaveToFile('sample-out.txt')
