@@ -1,4 +1,8 @@
-# martysama0134 & ChatGPT - 2023
+#!/usr/local/bin/python3
+# EterGroupParser - A Python script to parse and manipulate EterPack Group files.
+# Copyright (c) 2023 martysama0134
+# MIT License
+
 import re
 
 
@@ -68,13 +72,9 @@ class EterGroupReader(object):
             if len(value) == 1 and value[0].startswith('"') and value[0].endswith('"'):
                 value = value[0]#[1:-1]
 
-            # Convert numeric strings to integers
-            if all(part.isdigit() for part in value):
-                value = [int(item) for item in value]  # Convert to int list
-                # if len(value) == 1:
-                #     value = value[0]
-            else:
-                value = ''.join(value)  # Concatenate strings with spaces
+            # Check if the word is an integer
+            if isinstance(value, list):
+                value = [int(elem) if elem.isdigit() else elem for elem in value]
 
             return key, value
 
@@ -126,7 +126,6 @@ class EterGroupReader(object):
     def SaveToFile(self, filename):
         with open(filename, "w") as f:
             f.write(self.GenerateTree())
-        pass
 
 
 class EterGroupNode(object):

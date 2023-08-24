@@ -59,10 +59,17 @@ Group ApplyNumSettings
 	}
 	Group NotSoDefault
 	{
-		#--#	GRADE_NORMAL	GRADE_BRILLIANT	GRADE_RARE	GRADE_ANCIENT	GRADE_LEGENDARY	GRADE_MYTH
-		basis	1	1	1	2	2	3
-		add_min	0	0	0	0	0	0
-		add_max	0	1	2	2	3	3
+		#--#	GRADE_NORMAL	GRADE_BRILLIANT	GRADE_RARE	GRADE_ANCIENT	GRADE_LEGENDARY
+		basis	1	2	3	4	5
+		add_min	5	4	3	2	1
+		add_max	11	3	5	7	22
+	}
+	Group MixedTypes
+	{
+		#--#	Apply_Type	Apply_value
+		1	MAX_SP	500
+		2	RESIST_WIND	10
+		3	ENCHANT_WIND	10
 	}
 }
 
