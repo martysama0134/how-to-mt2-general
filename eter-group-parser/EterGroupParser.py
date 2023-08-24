@@ -115,7 +115,7 @@ class EterGroupReader(object):
         else:
             print('{}Group {}:'.format(GetSpaceIndent(level), group.name))
 
-        for key, elem in group.data.items():
+        for elem in group.dataList:
             if isinstance(elem, EterGroupNode):
                 self.PrintTree(elem, level + 1)
                 if ENABLE_NEXT_GROUP_PADDING:
@@ -139,7 +139,7 @@ class EterGroupReader(object):
                 for comment in group.comments:
                     generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
-            for key, elem in group.data.items():
+            for elem in group.dataList:
                 if isinstance(elem, EterGroupNode):
                     ProcessTree(elem, level + 1)
                     if ENABLE_NEXT_GROUP_PADDING:
@@ -206,10 +206,12 @@ class EterGroupNode(EterNode):
     def __init__(self, name=''):
         super().__init__(name)
 
-        self.data = {}
+        self.dataDict = {}
+        self.dataList = []
 
     def SetData(self, key, value):
-        self.data[key] = value
+        self.dataDict[key] = value
+        self.dataList.append(value)
 
 
 
@@ -218,3 +220,19 @@ if __name__ == "__main__":
     egr.LoadFromFile('sample.txt')
     egr.PrintTree()
     egr.SaveToFile('sample-out.txt')
+
+    # egr = EterGroupReader()
+    # egr.LoadFromFile('event.txt')
+    # egr.SaveToFile('event-out.txt')
+
+    # egr = EterGroupReader()
+    # egr.LoadFromFile('dragon_soul_table.txt')
+    # egr.SaveToFile('dragon_soul_table-out.txt')
+
+    # egr = EterGroupReader()
+    # egr.LoadFromFile('dst_commented.txt')
+    # egr.SaveToFile('dst_commented-out.txt')
+
+    # egr = EterGroupReader()
+    # egr.LoadFromFile('mob_drop_item.txt')
+    # egr.SaveToFile('mob_drop_item-out.txt')
