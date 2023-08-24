@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <rapidjson/document.h>
 #include <fmt/format.h> // Assuming you have fmt library installed
 
 constexpr bool PyLibCheckForce = false; // Throw an error if the file is missing
