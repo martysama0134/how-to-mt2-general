@@ -1,7 +1,19 @@
 #!/usr/local/bin/python3
-# EterGroupParser - A Python script to parse and manipulate EterPack Group files.
-# Copyright (c) 2023 martysama0134
+# Copyright (c) 2023, martysama0134
+# All rights reserved.
 # MIT License
+
+"""EterGroupParser
+A Python script to parse, manipulate, and automatically repair Eter Group files.
+"""
+
+__author__		= "martysama0134"
+__copyright__	= "Copyright (c) 2023 martysama0134"
+__date__		= "2023-08-24"
+__license__		= "MIT License"
+__version__		= "3.0"
+__url__         = "https://github.com/martysama0134/how-to-mt2-general/tree/master/eter-group-parser"
+__description__ = "A Python script to parse, manipulate, and automatically repair Eter Group files."
 
 import re
 
@@ -23,6 +35,12 @@ def GetGroupsOf(egr, fnc):
 
 
 class EterGroupReader(object):
+    """EterGroupReader
+    You can fully load and resave any Eter Group files like mob_drop_item.txt, warrior_m.msm, dragon_soul_table.txt, and quite more.
+
+    It also preserves the comments made with '#' in their correct place, except for the comments in the root below other Groups.
+    """
+
     def __init__(self):
         self.stackIndex = 0
         self.groupStack = {}
@@ -271,9 +289,9 @@ class EterGroupIterator:
 
 
 class MobDropItemHelper(EterGroupReader):
-    def AddNewItemToGroup():
-        pass
-
+    """MobDropItemHelper
+    You can handle mob_drop_item.txt with special functions.
+    """
     def GetGroupsOfMetins(self):
         return GetGroupsOfMetins(self)
 
