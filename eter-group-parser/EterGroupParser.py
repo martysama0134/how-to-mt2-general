@@ -31,11 +31,11 @@ class EterGroupReader(object):
             self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
 
 
-    def GetGroups(self, skipRoot=False):
+    def GetGroups(self, skipRoot=True):
         return EterGroupIterator(self, skipRoot=skipRoot)
 
 
-    def GetGroupsOf(self, fnc, skipRoot=False):
+    def GetGroupsOf(self, fnc, skipRoot=True):
         group_iterator = EterGroupIterator(self, skipRoot=skipRoot)
         return filter(fnc, group_iterator)
 
@@ -315,7 +315,15 @@ def IsTypeKillGroup(group):
 
 
 def IsMetinGroup(group):
-    return 'mob' in group.dataDict and 8000 <= group.dataDict['mob'].value[0] <= 8999
+    return IsVnumRangeGroup(group, 8000, 8999)
+
+
+def IsVnumListGroup(group, vnum_list):
+    return 'mob' in group.dataDict and group.dataDict['mob'].value[0] in vnum_list
+
+
+def IsVnumRangeGroup(group, min_vnum, max_vnum):
+    return 'mob' in group.dataDict and min_vnum <= group.dataDict['mob'].value[0] <= max_vnum
 
 
 def GetGroupHighestIndex(group):
@@ -407,13 +415,6 @@ if __name__ == "__main__":
         egr = MobDropItemHelper()
         egr.LoadFromFile('mob_drop_item.txt')
         for group in egr.GetGroupsOfMetinsAndDrop():
-            # highest = GetGroupHighestIndex(group) + 1
-            # elem = EterElemNode()
-            # elem.SetName(highest)
-            # elem.SetIndex(group.index)
-            # elem.SetParent(group)
-            # elem.SetData(highest, [27001, 1, 6.6])
-            # group.SetData(highest, elem)
             egr.AddIndexElement(group, [27001, 1, 6.6])
             egr.PrintTree(group)
             # print("HIGHEST", GetGroupHighestIndex(group))
