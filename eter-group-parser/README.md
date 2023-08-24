@@ -1,6 +1,6 @@
 # eter-group-parser
 
-It loads and resave Eter Group files.
+It loads and resave Eter Group files. It can also manipulate and repair them.
 
 Example of a loaded file:
 
@@ -82,4 +82,91 @@ Group HairData:
         Model: "hair/hair_1_1.gr2"
         SourceSkin: "hair/hair_1_1.dds"
         TargetSkin: "warrior_hair_01_gold.dds"
+```
+
+
+Examples:
+
+```py
+    if True: # load, print, and save
+        egr = EterGroupReader()
+        egr.LoadFromFile('sample.txt')
+        egr.PrintTree()
+        egr.SaveToFile('sample-out.txt')
+
+    if True: # find node and print it
+        egr = EterGroupReader()
+        egr.LoadFromFile('sample.txt')
+        node = egr.FindNode("ApplyNumSettings", "Default", "basis")
+        if node:
+            print("node {} found with value {}".format(node.key, node.value))
+
+    if True: # find node and edit it
+        egr = EterGroupReader()
+        egr.LoadFromFile('sample.txt')
+        node = egr.FindNode("ApplyNumSettings", "Default", "basis")
+        if node:
+            node.value = [11, 22, 33, 44, 55, 66]
+        egr.SaveToFile('sample-out.txt')
+
+    if True: # iter all groups and sub groups
+        egr = EterGroupReader()
+        egr.LoadFromFile('sample.txt')
+
+        # Create an instance of the iterator
+        group_iterator = EterGroupIterator(egr, skipRoot=True)
+
+        # Iterate over all groups using a lambda or function
+        for group in group_iterator:
+            print(f"Group Name: {group.name}")
+
+    if True: # load mob_drop_item and print only the metins
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOfMetins():
+            egr.PrintTree(group)
+            print("HIGHEST", GetGroupHighestIndex(group))
+        egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and add a red potion in the metin drops
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOfMetinsAndDrop():
+            egr.AddIndexElement(group, [27001, 1, 6.6])
+            egr.PrintTree(group)
+        egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and add a red potion in vnum list
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOf(lambda group: IsVnumInListGroup(group, [101, 105, 1059])):
+            egr.AddIndexElement(group, [27001, 1, 6.6])
+            egr.PrintTree(group)
+        egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and check for errors
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroups():
+            valid, found = CheckValidContinuousGroupIndex(group)
+            if not valid:
+                egr.PrintTree(group)
+                print(f"NOT VALID: Error at group '{group.name}' index {found}")
+                break
+        egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and repair for index errors
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroups():
+            RepairContinuousGroupIndex(group)
+        egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and manipulate it
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        for group in egr.GetGroupsOfMetins():
+            egr.PrintTree(group)
+        egr.SaveToFile('mob_drop_item-out.txt')
+
 ```
