@@ -369,12 +369,14 @@ def RepairContinuousGroupIndex(group):
 
     if needs_repair:
         group.dataDict = {}
+        print(f"reparing group {group.name}")
         for i, node in enumerate(GetGroupIndexNodeFromDataList(group)):
             old_key = node.key
             new_key = str(i + 1)
             group.dataDict[new_key] = node
             node.key = new_key
-            print(old_key, "->", new_key)
+            if old_key != new_key:
+                print(old_key, "->", new_key)
 
 
 
@@ -445,7 +447,6 @@ if __name__ == "__main__":
     #     for group in egr.GetGroupsOfMetinsAndDrop():
     #         egr.AddIndexElement(group, [27001, 1, 6.6])
     #         egr.PrintTree(group)
-    #         # print("HIGHEST", GetGroupHighestIndex(group))
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and add a red potion in vnum list
@@ -467,18 +468,12 @@ if __name__ == "__main__":
     #             break
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: # load mob_drop_item and repair for index errors
-        egr = MobDropItemHelper()
-        egr.LoadFromFile('mob_drop_item.txt')
-        for group in egr.GetGroups():
-            # egr.PrintTree(group)
-            RepairContinuousGroupIndex(group)
-            # valid, found = CheckValidContinuousGroupIndex(group, repair=True)
-            # if not valid:
-            #     egr.PrintTree(group)
-            #     print(f"NOT VALID: Error at group '{group.name}' index {found}")
-            #     break
-        egr.SaveToFile('mob_drop_item-out.txt')
+    # if True: # load mob_drop_item and repair for index errors
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     for group in egr.GetGroups():
+    #         RepairContinuousGroupIndex(group)
+    #     egr.SaveToFile('mob_drop_item-out.txt')
 
     # if True: # load mob_drop_item and manipulate it
     #     egr = MobDropItemHelper()
