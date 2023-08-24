@@ -5,6 +5,10 @@
 
 import re
 
+ENABLE_NEXT_GROUP_PADDING = False
+ENABLE_COMMENTS_PRESERVATION = True
+
+
 def GetIndent(n = 1, delimiter = '\t', padding = 1):
     return n * (delimiter * padding)
 
@@ -19,7 +23,8 @@ class EterGroupReader(object):
         self.groupStack = {}
         self.groupRoot = EterGroupNode("root")
         self.currentGroupNode = [self.groupRoot]
-        self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
+        if ENABLE_COMMENTS_PRESERVATION:
+            self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
 
 
     def LoadFromFile(self, filename):
@@ -36,7 +41,8 @@ class EterGroupReader(object):
                 continue
 
             elif line.startswith('#'):
-                self.lastNode.AddComment(line)
+                if ENABLE_COMMENTS_PRESERVATION:
+                    self.lastNode.AddComment(line)
                 continue
 
             elif line.lower().startswith('group'):
@@ -112,7 +118,8 @@ class EterGroupReader(object):
         for key, elem in group.data.items():
             if isinstance(elem, EterGroupNode):
                 self.PrintTree(elem, level + 1)
-                print("")
+                if ENABLE_NEXT_GROUP_PADDING:
+                    print("")
             else:
                 print('{}{}: {}'.format(GetSpaceIndent(level + 1), elem.key, elem.value))
 
@@ -128,20 +135,23 @@ class EterGroupReader(object):
                 generatedLines.append('{}Group\t{}'.format(GetIndent(level), group.name))
                 generatedLines.append('{}{{'.format(GetIndent(level)))
 
-            for comment in group.comments:
-                generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
+            if ENABLE_COMMENTS_PRESERVATION:
+                for comment in group.comments:
+                    generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
             for key, elem in group.data.items():
                 if isinstance(elem, EterGroupNode):
                     ProcessTree(elem, level + 1)
-                    generatedLines.append("")
+                    if ENABLE_NEXT_GROUP_PADDING:
+                        generatedLines.append("")
                 else:
                     if isinstance(elem.value, list):
                         elem.value = "\t".join(str(elem2) for elem2 in elem.value)
 
                     generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.key, elem.value))
-                    for comment in elem.comments:
-                        generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
+                    if ENABLE_COMMENTS_PRESERVATION:
+                        for comment in elem.comments:
+                            generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
             if isinstance(group, EterGroupNode) and level >= 0:
                 generatedLines.append('{}}}'.format(GetIndent(level)))
@@ -161,7 +171,8 @@ class EterNode(object):
         self.name = name or "NONAME_{}".format(id(self))
         self.index = 0
         self.parent = None
-        self.comments = []
+        if ENABLE_COMMENTS_PRESERVATION:
+            self.comments = []
 
     def SetName(self, name):
         self.name = name
@@ -172,8 +183,9 @@ class EterNode(object):
     def SetParent(self, parent):
         self.parent = parent
 
-    def AddComment(self, comment):
-        self.comments.append(comment)
+    if ENABLE_COMMENTS_PRESERVATION:
+        def AddComment(self, comment):
+            self.comments.append(comment)
 
 
 
