@@ -397,33 +397,50 @@ def RepairContinuousGroupIndex(group):
                 print(old_key, "->", new_key)
 
 
-def FindOrCreateMobDropGroup(self, mob_vnum, type_value):
-    # Check if a group with the given "mob" and "type" values already exists
-    for group in self.GetGroups():
-        if 'mob' in group.dataDict and 'type' in group.dataDict:
-            if group.dataDict['mob'].value[0] == mob_vnum and group.dataDict['type'].value[0] == type_value:
-                return group  # Group already exists, return it
-
-    groupName = f"Mob{mob_vnum}Type{type_value}"
-
+def CreateGroupNode(egr, func):
     # If the group does not exist, create a new one
     new_group = EterGroupNode()
+    func(new_group)
 
-    new_elem1 = EterElemNode()
-    new_elem1.SetData('mob', [mob_vnum])
-    new_group.SetData('mob', new_elem1)
+    new_group.SetIndex(egr.groupRoot.index + 1)
+    new_group.SetParent(egr.groupRoot)
 
-    new_elem2 = EterElemNode()
-    new_elem2.SetData('type', [type_value])
-    new_group.SetData('type', new_elem2)
+    egr.groupRoot.SetData(new_group.name, new_group)
+    return new_group
 
-    new_group.SetName(groupName)
-    new_group.SetIndex(self.groupRoot.index + 1)
-    new_group.SetParent(self.groupRoot)
 
-    self.groupRoot.SetData(groupName, new_group)
+def CreateMobDropGroup(egr, mob_vnum, type_value):
+    def custom_func(group):
+        new_elem1 = EterElemNode()
+        new_elem1.SetData('mob', [mob_vnum])
+        group.SetData('mob', new_elem1)
+
+        new_elem2 = EterElemNode()
+        new_elem2.SetData('type', [type_value])
+        group.SetData('type', new_elem2)
+
+    return CreateGroupNode(egr, custom_func)
+
+
+def FindOrCreateGroup(egr, condition_func, create_func):
+    # Check if a group satisfying the condition already exists
+    for group in egr.GetGroups():
+        if condition_func(group):
+            return group  # Group already exists, return it
+
+    # If the group does not exist, create a new one using the provided create_func
+    new_group = create_func()
 
     return new_group
+
+
+def FindOrCreateMobDropGroup(egr, mob_vnum, type_value):
+    condition_func = lambda group: 'mob' in group.dataDict and 'type' in group.dataDict and \
+                                   group.dataDict['mob'].value[0] == mob_vnum and group.dataDict['type'].value[0] == type_value
+
+    create_func = lambda: CreateMobDropGroup(egr, mob_vnum, type_value)
+
+    return FindOrCreateGroup(egr, condition_func, create_func)
 
 
 
@@ -527,12 +544,14 @@ if __name__ == "__main__":
     #         egr.PrintTree(group)
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: # load mob_drop_item and search / create a node
-        egr = MobDropItemHelper()
-        egr.LoadFromFile('mob_drop_item.txt')
-        group = FindOrCreateMobDropGroup(egr, 691, "limit")
-        egr.AddIndexElement(group, [27001, 1, 6.6])
-        egr.PrintTree(group)
-        egr.SaveToFile('mob_drop_item-out.txt')
+    # if True: # load mob_drop_item and search / create a node
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item.txt')
+    #     group = FindOrCreateMobDropGroup(egr, 691, "limit")
+    #     egr.AddIndexElement(group, [27001, 11, 6.12])
+    #     egr.AddIndexElement(group, [27002, 22, 12.34])
+    #     egr.AddIndexElement(group, [27003, 33, 18.56])
+    #     egr.PrintTree(group)
+    #     egr.SaveToFile('mob_drop_item-out.txt')
 
 
