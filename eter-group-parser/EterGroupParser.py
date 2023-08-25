@@ -411,13 +411,14 @@ def CreateGroupNode(egr, func):
 
 def CreateMobDropGroup(egr, mob_vnum, type_value):
     def custom_func(group):
-        new_elem1 = EterElemNode()
-        new_elem1.SetData('mob', [mob_vnum])
-        group.SetData('mob', new_elem1)
-
         new_elem2 = EterElemNode()
         new_elem2.SetData('type', [type_value])
         group.SetData('type', new_elem2)
+
+        new_elem1 = EterElemNode()
+        new_elem1.SetData('mob', [mob_vnum])
+        group.SetData('mob', new_elem1)
+        group.SetName(f"Mob{mob_vnum}Type{type_value.capitalize()}")
 
     return CreateGroupNode(egr, custom_func)
 
