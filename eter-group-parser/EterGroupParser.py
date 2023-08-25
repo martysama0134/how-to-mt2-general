@@ -346,7 +346,7 @@ def IsVnumInRangeGroup(group, min_vnum, max_vnum):
 
 
 def GetGroupHighestIndex(group):
-    return max(GetGroupIndexKeys(group), default=None)
+    return max(GetGroupIndexKeys(group), default=0)
 
 
 def GetGroupIndexKeys(group):
@@ -395,6 +395,35 @@ def RepairContinuousGroupIndex(group):
             node.key = new_key
             if old_key != new_key:
                 print(old_key, "->", new_key)
+
+
+def FindOrCreateMobDropGroup(self, mob_vnum, type_value):
+    # Check if a group with the given "mob" and "type" values already exists
+    for group in self.GetGroups():
+        if 'mob' in group.dataDict and 'type' in group.dataDict:
+            if group.dataDict['mob'].value[0] == mob_vnum and group.dataDict['type'].value[0] == type_value:
+                return group  # Group already exists, return it
+
+    groupName = f"Mob{mob_vnum}Type{type_value}"
+
+    # If the group does not exist, create a new one
+    new_group = EterGroupNode()
+
+    new_elem1 = EterElemNode()
+    new_elem1.SetData('mob', [mob_vnum])
+    new_group.SetData('mob', new_elem1)
+
+    new_elem2 = EterElemNode()
+    new_elem2.SetData('type', [type_value])
+    new_group.SetData('type', new_elem2)
+
+    new_group.SetName(groupName)
+    new_group.SetIndex(self.groupRoot.index + 1)
+    new_group.SetParent(self.groupRoot)
+
+    self.groupRoot.SetData(groupName, new_group)
+
+    return new_group
 
 
 
@@ -497,5 +526,13 @@ if __name__ == "__main__":
     #     for group in egr.GetGroupsOfMetins():
     #         egr.PrintTree(group)
     #     egr.SaveToFile('mob_drop_item-out.txt')
+
+    if True: # load mob_drop_item and search / create a node
+        egr = MobDropItemHelper()
+        egr.LoadFromFile('mob_drop_item.txt')
+        group = FindOrCreateMobDropGroup(egr, 691, "limit")
+        egr.AddIndexElement(group, [27001, 1, 6.6])
+        egr.PrintTree(group)
+        egr.SaveToFile('mob_drop_item-out.txt')
 
 
