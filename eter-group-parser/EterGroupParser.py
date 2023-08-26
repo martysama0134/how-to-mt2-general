@@ -17,9 +17,9 @@ __description__ = "A Python script to parse, manipulate, and automatically repai
 
 import re
 
-ENABLE_NEXT_GROUP_PADDING = False
-ENABLE_COMMENTS_PRESERVATION = True
-ENABLE_AUTO_INCREMENT_FIX = True
+ENABLE_NEXT_GROUP_PADDING = False #add empty new line after each generated group
+ENABLE_COMMENTS_PRESERVATION = True #keep all comments (bug: root comments after the first Group are moved on top)
+ENABLE_COLUMN_ALIAS = True #from #--#, all the columns after #--# can be accessed as aliases
 
 
 def GetIndent(n = 1, delimiter = '\t', padding = 1):
@@ -75,6 +75,12 @@ class EterGroupReader(object):
             elif line.startswith('#'):
                 if ENABLE_COMMENTS_PRESERVATION:
                     self.lastNode.AddComment(line)
+                if ENABLE_COLUMN_ALIAS and line.startswith('#--#'):
+                    key, value = self.GetValueFromLine(line)
+                    aliases = {item: index for index, item in enumerate(value)}
+                    for index, alias in enumerate(value):
+                        self.currentGroupNode[-1].AddColumnAlias(alias, index)
+                    # print(key, value)
                 continue
 
             elif line.lower().startswith('group'):
@@ -254,6 +260,20 @@ class EterElemNode(EterNode):
             self.SetName(key)
         self.value = value
 
+    if ENABLE_COLUMN_ALIAS:
+        def GetAliasIndex(self, key):
+            try:
+                if self.parent:
+                    return self.parent.columnAlias[key.upper()]
+            except KeyError:
+                pass
+            return -1
+
+        def GetAliasValue(self, key, default = None):
+            index = self.GetAliasIndex(key)
+            if index == -1:
+                return default
+            return self.value[index]
 
 
 class EterGroupNode(EterNode):
@@ -262,10 +282,15 @@ class EterGroupNode(EterNode):
 
         self.dataDict = {}
         self.dataList = []
+        self.columnAlias = {}
 
     def SetData(self, key, value):
         self.dataDict[str(key).lower()] = value
         self.dataList.append(value)
+
+    if ENABLE_COLUMN_ALIAS:
+        def AddColumnAlias(self, alias, index):
+            self.columnAlias[alias.upper()] = index
 
 
 
@@ -476,6 +501,19 @@ if __name__ == "__main__":
     #     egr = EterGroupReader()
     #     egr.LoadFromFile('sample.txt')
     #     egr.PrintTree()
+    #     egr.SaveToFile('sample-out.txt')
+
+    # if True: # try column alias
+    #     egr = EterGroupReader()
+    #     egr.LoadFromFile('sample.txt')
+    #     node = egr.FindNode("ApplyNumSettings", "Default", "basis")
+    #     if node:
+    #         print("GRADE_NORMAL", "has index", node.GetAliasIndex("GRADE_NORMAL"), "and value", node.GetAliasValue("GRADE_NORMAL"))
+    #         print("GRADE_BRILLIANT", "has index", node.GetAliasIndex("GRADE_BRILLIANT"), "and value", node.GetAliasValue("GRADE_BRILLIANT"))
+    #         print("GRADE_RARE", "has index", node.GetAliasIndex("GRADE_RARE"), "and value", node.GetAliasValue("GRADE_RARE"))
+    #         print("GRADE_ANCIENT", "has index", node.GetAliasIndex("GRADE_ANCIENT"), "and value", node.GetAliasValue("GRADE_ANCIENT"))
+    #         print("GRADE_LEGENDARY", "has index", node.GetAliasIndex("GRADE_LEGENDARY"), "and value", node.GetAliasValue("GRADE_LEGENDARY"))
+    #         print("GRADE_MYTH", "has index", node.GetAliasIndex("GRADE_MYTH"), "and value", node.GetAliasValue("GRADE_MYTH"))
     #     egr.SaveToFile('sample-out.txt')
 
     # if True: # find node and print it
