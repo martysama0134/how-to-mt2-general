@@ -153,7 +153,7 @@ class EterGroupReader(object):
                 if ENABLE_NEXT_GROUP_PADDING:
                     print("")
             else:
-                print('{}{}: {}'.format(GetSpaceIndent(level + 1), elem.key, elem.value))
+                print('{}{}: {}'.format(GetSpaceIndent(level + 1), elem.name, elem.value))
 
 
     def GenerateTree(self):
@@ -180,7 +180,7 @@ class EterGroupReader(object):
                     if isinstance(elem.value, list):
                         elem.value = "\t".join(str(elem2) for elem2 in elem.value)
 
-                    generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.key, elem.value))
+                    generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.name, elem.value))
                     if ENABLE_COMMENTS_PRESERVATION:
                         for comment in elem.comments:
                             generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
@@ -207,6 +207,7 @@ class EterGroupReader(object):
         node = self.groupRoot  # Start from the root
 
         for key in args:
+            key = key.lower() # search by lower case key
             if key in node.dataDict:
                 node = node.dataDict[key]
             else:
@@ -243,11 +244,14 @@ class EterElemNode(EterNode):
     def __init__(self, name=''):
         super().__init__(name)
 
-        self.key = ''
+        self.key = '' #lowercased
         self.value = ''
 
     def SetData(self, key, value):
-        self.key = str(key)
+        key = str(key)
+        if key.lower() != self.key:
+            self.key = key.lower()
+            self.SetName(key)
         self.value = value
 
 
@@ -260,7 +264,7 @@ class EterGroupNode(EterNode):
         self.dataList = []
 
     def SetData(self, key, value):
-        self.dataDict[str(key)] = value
+        self.dataDict[str(key).lower()] = value
         self.dataList.append(value)
 
 
@@ -392,7 +396,7 @@ def RepairContinuousGroupIndex(group):
             old_key = node.key
             new_key = str(i + 1)
             group.dataDict[new_key] = node
-            node.key = new_key
+            node.key = node.name = new_key
             if old_key != new_key:
                 print(old_key, "->", new_key)
 
@@ -438,6 +442,8 @@ def FindOrCreateGroup(egr, condition_func, create_func):
 
 
 def FindOrCreateMobDropGroup(egr, mob_vnum, type_value):
+    mob_vnum = int(mob_vnum)
+    type_value = type_value.lower()
     condition_func = lambda group: 'mob' in group.dataDict and 'type' in group.dataDict and \
                                    group.dataDict['mob'].value[0] == mob_vnum and group.dataDict['type'].value[0] == type_value
 
@@ -459,7 +465,7 @@ class RaceDataHelper(EterGroupReader):
 def ReplaceShapeIndexValue(egr, old_value, new_value):
     for group in egr.GetGroups():
         for elem in group.dataList:
-            if isinstance(elem, EterElemNode) and elem.key == 'ShapeIndex' and elem.value[0] == old_value:
+            if isinstance(elem, EterElemNode) and elem.key == 'shapeindex' and elem.value[0] == old_value:
                 elem.value[0] = new_value
 
 
@@ -574,9 +580,9 @@ if __name__ == "__main__":
     #     egr.PrintTree(group)
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
-    if True: #load a .msm and search a specific costume
-        egr = RaceDataHelper()
-        egr.LoadFromFile('assassin_m.msm')
-        egr.ReplaceShapeIndexValue(44114, 44115)
-        egr.SaveToFile('assassin_m-out.msm')
+    # if True: #load a .msm and search a specific costume
+    #     egr = RaceDataHelper()
+    #     egr.LoadFromFile('assassin_m.msm')
+    #     egr.ReplaceShapeIndexValue(44114, 44115)
+    #     egr.SaveToFile('assassin_m-out.msm')
 
