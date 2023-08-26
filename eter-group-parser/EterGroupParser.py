@@ -397,19 +397,20 @@ def RepairContinuousGroupIndex(group):
                 print(old_key, "->", new_key)
 
 
-def CreateGroupNode(egr, func):
+def CreateGroupNode(parent, func):
     # If the group does not exist, create a new one
     new_group = EterGroupNode()
     func(new_group)
 
-    new_group.SetIndex(egr.groupRoot.index + 1)
-    new_group.SetParent(egr.groupRoot)
+    new_group.SetIndex(parent.index + 1)
+    new_group.SetParent(parent)
 
-    egr.groupRoot.SetData(new_group.name, new_group)
+    parent.SetData(new_group.name, new_group)
     return new_group
 
 
 def CreateMobDropGroup(egr, mob_vnum, type_value):
+    parent = egr.groupRoot
     def custom_func(group):
         new_elem2 = EterElemNode()
         new_elem2.SetData('type', [type_value])
@@ -419,8 +420,9 @@ def CreateMobDropGroup(egr, mob_vnum, type_value):
         new_elem1.SetData('mob', [mob_vnum])
         group.SetData('mob', new_elem1)
         group.SetName(f"Mob{mob_vnum}Type{type_value.capitalize()}")
+        group.SetParent(parent)
 
-    return CreateGroupNode(egr, custom_func)
+    return CreateGroupNode(parent, custom_func)
 
 
 def FindOrCreateGroup(egr, condition_func, create_func):
@@ -442,6 +444,23 @@ def FindOrCreateMobDropGroup(egr, mob_vnum, type_value):
     create_func = lambda: CreateMobDropGroup(egr, mob_vnum, type_value)
 
     return FindOrCreateGroup(egr, condition_func, create_func)
+
+
+
+class RaceDataHelper(EterGroupReader):
+    """RaceDataHelper
+    You can handle any .msm with special functions.
+    """
+    def ReplaceShapeIndexValue(self, old_value, new_value):
+        ReplaceShapeIndexValue(self, old_value, new_value)
+
+
+
+def ReplaceShapeIndexValue(egr, old_value, new_value):
+    for group in egr.GetGroups():
+        for elem in group.dataList:
+            if isinstance(elem, EterElemNode) and elem.key == 'ShapeIndex' and elem.value[0] == old_value:
+                elem.value[0] = new_value
 
 
 
@@ -555,4 +574,9 @@ if __name__ == "__main__":
     #     egr.PrintTree(group)
     #     egr.SaveToFile('mob_drop_item-out.txt')
 
+    if True: #load a .msm and search a specific costume
+        egr = RaceDataHelper()
+        egr.LoadFromFile('assassin_m.msm')
+        egr.ReplaceShapeIndexValue(44114, 44115)
+        egr.SaveToFile('assassin_m-out.msm')
 
