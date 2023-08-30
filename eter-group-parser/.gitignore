@@ -1,3 +1,8 @@
 sample-*.txt
 *.pyc
 __pycache__/
+*.msm
+dragon_soul_table*.txt
+dst*.txt
+event*.txt
+mob_drop_item*.txt
