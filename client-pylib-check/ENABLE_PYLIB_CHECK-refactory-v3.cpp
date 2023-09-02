@@ -157,6 +157,13 @@ bool __CheckPyLibFiles()
 	PrintMe(1, "__CheckPyLibFiles processing");
 	if constexpr (PyLibTableLoadFromJson)
 	{
+		// block load from file
+		if (std::filesystem::exists(fileInfo.fileName))
+		{
+			PrintMe(0, "pylib json load blocked from file %s", PyLibTableJsonName);
+			return false;
+		}
+
 		LPCVOID pvData{};
 		CMappedFile file{};
 		if (!CEterPackManager::Instance().Get(file, PyLibTableJsonName, &pvData))
