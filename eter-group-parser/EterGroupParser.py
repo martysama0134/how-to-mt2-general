@@ -42,6 +42,7 @@ class EterGroupReader(object):
     """
 
     def __init__(self):
+        self.filename = ""
         self.stackIndex = 0
         self.groupStack = {}
         self.groupRoot = EterGroupNode("root")
@@ -60,6 +61,7 @@ class EterGroupReader(object):
 
 
     def LoadFromFile(self, filename):
+        self.filename = filename
         with open(filename, "r") as f:
             return self.LoadFromData(f.read())
 
@@ -416,7 +418,7 @@ def RepairContinuousGroupIndex(group):
 
     if needs_repair:
         group.dataDict = {}
-        print(f"reparing group {group.name}")
+        print(f"repairing group {group.name}")
         for i, node in enumerate(GetGroupIndexNodeFromDataList(group)):
             old_key = node.key
             new_key = str(i + 1)
