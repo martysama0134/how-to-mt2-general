@@ -62,7 +62,7 @@ class EterGroupReader(object):
 
     def LoadFromFile(self, filename):
         self.filename = filename
-        with open(filename, "r") as f:
+        with open(filename, "r", encoding="cp1252") as f:
             return self.LoadFromData(f.read())
 
 
@@ -201,7 +201,7 @@ class EterGroupReader(object):
 
 
     def SaveToFile(self, filename):
-        with open(filename, "w") as f:
+        with open(filename, "w", encoding="cp1252") as f:
             f.write(self.GenerateTree())
 
 
@@ -625,4 +625,17 @@ if __name__ == "__main__":
     #     egr.LoadFromFile('assassin_m.msm')
     #     egr.ReplaceShapeIndexValue(44114, 44115)
     #     egr.SaveToFile('assassin_m-out.msm')
+
+    # if True: # load mob_drop_item and repair for index errors
+    #     egr = MobDropItemHelper()
+    #     egr.LoadFromFile('mob_drop_item_kr.txt')
+    #     for group in egr.GetGroups():
+    #         # if group.name == "wolf":
+    #         # print(group.name)
+    #         # RepairContinuousGroupIndex(group)
+    #         valid, found = CheckValidContinuousGroupIndex(group)
+    #         if not valid:
+    #             egr.PrintTree(group)
+    #             print(f"NOT VALID: Error at group '{group.name}' index {found}")
+    #             break
 
