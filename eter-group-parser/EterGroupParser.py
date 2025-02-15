@@ -292,7 +292,10 @@ class EterGroupNode(EterNode):
 
     if ENABLE_COLUMN_ALIAS:
         def AddColumnAlias(self, alias, index):
-            self.columnAlias[alias.upper()] = index
+            if type(alias)==int:
+                self.columnAlias[str(alias)] = index
+            else:
+                self.columnAlias[alias.upper()] = index
 
 
 
