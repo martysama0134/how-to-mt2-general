@@ -18,7 +18,7 @@ __description__ = "A Python script to parse, manipulate, and automatically repai
 import re
 
 ENABLE_NEXT_GROUP_PADDING = False #add empty new line after each generated group
-ENABLE_COMMENTS_PRESERVATION = True #keep all comments (bug: root comments after the first Group are moved on top)
+ENABLE_COMMENTS_PRESERVATION = True #keep all comments in their correct position
 ENABLE_COLUMN_ALIAS = True #from #--#, all the columns after #--# can be accessed as aliases
 
 
@@ -38,7 +38,7 @@ class EterGroupReader(object):
     """EterGroupReader
     You can fully load and resave any Eter Group files like mob_drop_item.txt, warrior_m.msm, dragon_soul_table.txt, and quite more.
 
-    It also preserves the comments made with '#' in their correct place, except for the comments in the root below other Groups.
+    It also preserves the comments made with '#' in their correct place.
     """
 
     def __init__(self):
@@ -47,8 +47,6 @@ class EterGroupReader(object):
         self.groupStack = {}
         self.groupRoot = EterGroupNode("root")
         self.currentGroupNode = [self.groupRoot]
-        if ENABLE_COMMENTS_PRESERVATION:
-            self.lastNode = self.currentGroupNode[-1] # Used only for preserving comments
 
 
     def GetGroups(self, skipRoot=True):
@@ -76,7 +74,7 @@ class EterGroupReader(object):
 
             elif line.startswith('#'):
                 if ENABLE_COMMENTS_PRESERVATION:
-                    self.lastNode.AddComment(line)
+                    self.currentGroupNode[-1].dataList.append(EterCommentNode(line))
                 if ENABLE_COLUMN_ALIAS and line.startswith('#--#'):
                     key, value = self.GetValueFromLine(line)
                     aliases = {item: index for index, item in enumerate(value)}
@@ -99,7 +97,6 @@ class EterGroupReader(object):
                 self.currentGroupNode[-1].SetData(groupName, group)
 
                 self.currentGroupNode.append(group)
-                self.lastNode = group
 
             elif line.startswith('{'):
                 pass #stack incremental moved to group init
@@ -109,7 +106,6 @@ class EterGroupReader(object):
                     self.groupStack[self.stackIndex] = False
                     self.stackIndex -= 1
                     self.currentGroupNode.pop()
-                    self.lastNode = self.currentGroupNode[-1]
 
             else:
                 key, value = self.GetValueFromLine(line)
@@ -119,7 +115,6 @@ class EterGroupReader(object):
                 elem.SetParent(self.currentGroupNode[-1])
                 elem.SetData(key, value)
                 self.currentGroupNode[-1].SetData(key, elem)
-                self.lastNode = elem
                 # print(key, value)
 
 
@@ -162,6 +157,8 @@ class EterGroupReader(object):
                 self.PrintTree(elem, level + 1)
                 if ENABLE_NEXT_GROUP_PADDING:
                     print("")
+            elif isinstance(elem, EterCommentNode):
+                print('{}{}'.format(GetSpaceIndent(level + 1), elem.text))
             else:
                 print('{}{}: {}'.format(GetSpaceIndent(level + 1), elem.name, elem.value))
 
@@ -177,21 +174,16 @@ class EterGroupReader(object):
                 generatedLines.append('{}Group\t{}'.format(GetIndent(level), group.name))
                 generatedLines.append('{}{{'.format(GetIndent(level)))
 
-            if ENABLE_COMMENTS_PRESERVATION:
-                for comment in group.comments:
-                    generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
-
             for elem in group.dataList:
-                if isinstance(elem, EterGroupNode):
+                if isinstance(elem, EterCommentNode):
+                    generatedLines.append('{}{}'.format(GetIndent(level + 1), elem.text))
+                elif isinstance(elem, EterGroupNode):
                     ProcessTree(elem, level + 1)
                     if ENABLE_NEXT_GROUP_PADDING:
                         generatedLines.append("")
                 else:
                     value_str = "\t".join(str(v) for v in elem.value) if isinstance(elem.value, list) else elem.value
                     generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.name, value_str))
-                    if ENABLE_COMMENTS_PRESERVATION:
-                        for comment in elem.comments:
-                            generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
 
             if isinstance(group, EterGroupNode) and level >= 0:
                 generatedLines.append('{}}}'.format(GetIndent(level)))
@@ -230,8 +222,6 @@ class EterNode(object):
         self.name = name or "NONAME_{}".format(id(self))
         self.index = 0
         self.parent = None
-        if ENABLE_COMMENTS_PRESERVATION:
-            self.comments = []
 
     def SetName(self, name):
         self.name = name
@@ -242,10 +232,11 @@ class EterNode(object):
     def SetParent(self, parent):
         self.parent = parent
 
-    if ENABLE_COMMENTS_PRESERVATION:
-        def AddComment(self, comment):
-            self.comments.append(comment)
 
+
+class EterCommentNode:
+    def __init__(self, text=''):
+        self.text = text
 
 
 class EterElemNode(EterNode):
