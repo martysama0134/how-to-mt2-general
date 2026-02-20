@@ -85,7 +85,7 @@ class EterGroupReader(object):
                     # print(key, value)
                 continue
 
-            elif line.lower().startswith('group'):
+            elif re.match(r'group(?:\s|$)', line, re.IGNORECASE):
                 self.stackIndex += 1
                 self.groupStack[self.stackIndex] = True
 
@@ -105,10 +105,11 @@ class EterGroupReader(object):
                 pass #stack incremental moved to group init
 
             elif line.startswith('}'):
-                self.groupStack[self.stackIndex] = False
-                self.stackIndex -= 1
-                self.currentGroupNode.pop()
-                self.lastNode = self.currentGroupNode[-1]
+                if self.stackIndex > 0 and len(self.currentGroupNode) > 1:
+                    self.groupStack[self.stackIndex] = False
+                    self.stackIndex -= 1
+                    self.currentGroupNode.pop()
+                    self.lastNode = self.currentGroupNode[-1]
 
             else:
                 key, value = self.GetValueFromLine(line)
@@ -135,13 +136,14 @@ class EterGroupReader(object):
             key = words[0]
             value = words[1:]
 
-            # Handle values within double quotes
-            if len(value) == 1 and value[0].startswith('"') and value[0].endswith('"'):
-                value = value[0]#[1:-1]
-
-            # Check if the word is an integer
+            # Convert integer strings to int (including negative); floats stay as strings
+            def _try_int(s):
+                try:
+                    return int(s)
+                except ValueError:
+                    return s
             if isinstance(value, list):
-                value = [int(elem) if elem.isdigit() else elem for elem in value]
+                value = [_try_int(elem) for elem in value]
 
             return key, value
 
@@ -185,10 +187,8 @@ class EterGroupReader(object):
                     if ENABLE_NEXT_GROUP_PADDING:
                         generatedLines.append("")
                 else:
-                    if isinstance(elem.value, list):
-                        elem.value = "\t".join(str(elem2) for elem2 in elem.value)
-
-                    generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.name, elem.value))
+                    value_str = "\t".join(str(v) for v in elem.value) if isinstance(elem.value, list) else elem.value
+                    generatedLines.append('{}{}\t{}'.format(GetIndent(level + 1), elem.name, value_str))
                     if ENABLE_COMMENTS_PRESERVATION:
                         for comment in elem.comments:
                             generatedLines.append('{}{}'.format(GetIndent(level + 1), comment))
@@ -420,7 +420,8 @@ def RepairContinuousGroupIndex(group):
             needs_repair = True
 
     if needs_repair:
-        group.dataDict = {}
+        for key in [k for k in group.dataDict if k.isdigit()]:
+            del group.dataDict[key]
         print(f"repairing group {group.name}")
         for i, node in enumerate(GetGroupIndexNodeFromDataList(group)):
             old_key = node.key
