@@ -1,3 +1,10 @@
+---
+title: Colored Quest Scrolls
+parent: Tutorials
+nav_order: 1
+permalink: /how-to-colored-quest-scrolls/
+---
+
 This is a revised version of an old thread. Following this How-To, you will have a better customizable solution for the aspect of your quests.
 
 You will be able to choice amongst: quest icon, text color, blink effect (like whisper buttons)

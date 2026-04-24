@@ -1,3 +1,10 @@
+---
+title: WorldEditor DPI Fix
+parent: Tutorials
+nav_order: 8
+permalink: /worldeditor-dpi-fix/
+---
+
 If you have issues in displaying the WorldEditor such as a bigger and cut-off UI like [this](http://i.imgur.com/30PusGF.png), you have to do the following things:
 
 1. Turn on the external manifest loading by running [EnableExternalManifest.reg](./EnableExternalManifest.reg).

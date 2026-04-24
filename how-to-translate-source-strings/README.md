@@ -1,3 +1,10 @@
+---
+title: Translate Source Strings
+parent: Tutorials
+nav_order: 6
+permalink: /how-to-translate-source-strings/
+---
+
 Specify your locale_string.txt path, and the Server/game/src path. The script will do everything automatically.
 
 Make a backup before proceeding.

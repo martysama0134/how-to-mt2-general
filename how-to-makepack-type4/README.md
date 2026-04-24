@@ -1,3 +1,10 @@
+---
+title: MakePack Type4
+parent: Tutorials
+nav_order: 3
+permalink: /how-to-makepack-type4/
+---
+
 # How-to makepack type4
 By using `MakePack.exe` (you need to compile it), you can use this python script to generate type4 packs.
 The generated .dat key must be added in the package/ folder server-side.

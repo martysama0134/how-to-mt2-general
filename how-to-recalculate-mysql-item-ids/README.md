@@ -1,3 +1,10 @@
+---
+title: Recalculate MySQL Item IDs
+parent: Tutorials
+nav_order: 5
+permalink: /how-to-recalculate-mysql-item-ids/
+---
+
 # How to recalculate MySQL ITEM IDs
 Did you get the "ItemIDRange: NO MORE ITEM ID RANGE" error?
 

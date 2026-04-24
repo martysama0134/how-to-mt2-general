@@ -1,3 +1,10 @@
+---
+title: Quest Syntax Highlighting
+parent: Tutorials
+nav_order: 7
+permalink: /quest-syntax-highlighting/
+---
+
 ###### [How-To] Notepad++ Syntax Highlighting Metin2 Quests Lua
 
 ---

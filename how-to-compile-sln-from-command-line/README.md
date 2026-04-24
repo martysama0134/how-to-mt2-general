@@ -1,3 +1,10 @@
+---
+title: Compile SLN from Command Line
+parent: Tutorials
+nav_order: 2
+permalink: /how-to-compile-sln-from-command-line/
+---
+
 ### Intro
 Create a new file called `Metin2Client_CompileRelease.bat` inside `\Srcs\Client\` containing:
 ```batch
