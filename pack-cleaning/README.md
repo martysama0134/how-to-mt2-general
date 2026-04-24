@@ -1,3 +1,10 @@
+---
+title: Pack Cleaning
+parent: Tools
+nav_order: 3
+permalink: /pack-cleaning/
+---
+
 ### Pack Cleaning Python Scripts
 
 - `pack_find_duplicates.py` will iterate all the (unpacked) packs and remove the duplicated files

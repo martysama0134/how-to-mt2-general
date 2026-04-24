@@ -1,3 +1,10 @@
+---
+title: XTEA Keys Generator
+parent: Tools
+nav_order: 6
+permalink: /xtea-keys-generator/
+---
+
 # Intro
 This python script automatically generates random xtea keys (into a file called `xtea_keys_gen.txt`) and the relative array code for the `EterPack.cpp` as well.
 

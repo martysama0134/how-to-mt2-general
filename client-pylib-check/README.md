@@ -1,3 +1,10 @@
+---
+title: Client PyLib Check
+parent: Tools
+nav_order: 1
+permalink: /client-pylib-check/
+---
+
 The `ENABLE_PYLIB_CHECK-refactory-v3.cpp` contains a full refactory in c++20.
 
 ### How to Install the new version

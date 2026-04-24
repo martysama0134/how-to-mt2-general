@@ -1,3 +1,10 @@
+---
+title: PySockAPI
+parent: Tools
+nav_order: 4
+permalink: /pysockapi/
+---
+
 ### PySockAPI Module
 It's a simple module that uses socket connection to send commands to a m2 server (via adminpage)
 

@@ -1,3 +1,10 @@
+---
+title: Eter Group Parser
+parent: Tools
+nav_order: 2
+permalink: /eter-group-parser/
+---
+
 # eter-group-parser
 
 It loads and resave Eter Group files. It can also manipulate and repair them.

@@ -1,3 +1,10 @@
+---
+title: Sequence Generator
+parent: Tools
+nav_order: 5
+permalink: /sequence-generator/
+---
+
 # Intro
 This python script automatically generates the sequence table for `EterLib\NetStream.cpp` (in `s_bSequenceTable`) and `game\src\sequence.cpp` (in `gc_abSequence`).
 
