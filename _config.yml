@@ -1,0 +1,13 @@
+title: How-To MT2 General
+description: Collection of tools & tutorials for MT2 development
+remote_theme: just-the-docs/just-the-docs
+url: https://martysama0134.github.io
+baseurl: /how-to-mt2-general
+
+search_enabled: true
+
+exclude:
+  - docs/
+  - Gemfile.lock
+  - LICENSE
+  - .gitignore
