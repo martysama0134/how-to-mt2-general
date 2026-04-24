@@ -4,6 +4,7 @@ remote_theme: just-the-docs/just-the-docs
 url: https://martysama0134.github.io
 baseurl: /how-to-mt2-general
 
+color_scheme: dark
 search_enabled: true
 
 exclude:
